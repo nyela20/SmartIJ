@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="twix.views.VueTwix">
+   <top>
+      <Label fx:id="filename" contentDisplay="TOP" prefHeight="26.0" prefWidth="367.0" text="Choisissez un fichier ..." BorderPane.alignment="CENTER">
+         <graphic>
+            <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#search" prefHeight="26.0" prefWidth="72.0" text="search" visible="false" />
+         </graphic></Label>
+   </top>
+</BorderPane>
