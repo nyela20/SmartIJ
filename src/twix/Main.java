@@ -9,7 +9,6 @@ import twix.views.VueMenu;
 import twix.views.VueTwix;
 import twix.model.TwixIG;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public class Main extends Application {
@@ -31,7 +30,7 @@ public class Main extends Application {
 
         root.setCenter(loaderTwix.load());
         root.setTop(loaderMenu.load());
-        primaryStage.setTitle("TwixIG");
+        primaryStage.setTitle("SmartIJ");
         primaryStage.setScene(new Scene(root,500,500));
         primaryStage.show();
 

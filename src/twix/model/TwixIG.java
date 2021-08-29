@@ -1,7 +1,7 @@
 package twix.model;
 
 import javafx.scene.control.TextInputDialog;
-import twix.exceptions.ExceptionTwix;
+import twix.views.VueBoite;
 
 import javax.swing.*;
 import java.io.*;
@@ -53,8 +53,13 @@ public class TwixIG extends SujetObserve{
         Collections.addAll(text,resultSplit.split("\n"));
         autoCorrect(text);
         System.out.println(text + "\n\n");
-        suggest(text,userWord);
+        suggestForUser(suggestWord(text,userWord),userWord);
     }
+
+    private void suggestForUser(ArrayList<String> suggestion, String userWord){
+        VueBoite vueBoite = new VueBoite(suggestion,this,userWord);
+    }
+
 
     /**
      * renvoie une suggestion de chiffre
@@ -62,7 +67,7 @@ public class TwixIG extends SujetObserve{
      * @param userword le mot cké
      * @return un tableau contenant les suggestions
      */
-    public ArrayList<String> suggest(ArrayList<String> text, String userword) {
+    public ArrayList<String> suggestWord(ArrayList<String> text, String userword) {
         ArrayList<String> suggestion = new ArrayList<>();
         int index = searchWord(text, userword, 0);
         boolean stop = false;
@@ -70,11 +75,11 @@ public class TwixIG extends SujetObserve{
             index = searchFirstNumberFrom(text, index + 1);
             if(searchWord(text,userword,index) == -1) {
                 stop = true;
-                if(estUnEntier(text.get(index+1).replaceAll(" ", ""))){
+                if(estUnEntier(text.get(index+1))){
                     stop = false;
                 }
             }
-            suggestion.add(text.get(index).replaceAll(" ",""));
+            suggestion.add(text.get(index));
         }
         System.out.println(suggestion);
         return suggestion;
@@ -82,7 +87,7 @@ public class TwixIG extends SujetObserve{
 
     public int searchFirstNumberFrom(ArrayList<String> text,int index){
         for(int i=index; i< text.size(); i++){
-            if(estUnEntier(text.get(i).replaceAll(" ", "")))
+            if(estUnEntier(text.get(i)))
                 return i;
         }
         return -1;
@@ -119,9 +124,11 @@ public class TwixIG extends SujetObserve{
             }
         }
         String tmp = text.toString().replaceAll(",", "\n");
+        String tmp2 = tmp.replaceAll(" ","");
         text.clear();
-        Collections.addAll(text,tmp.split("\n"));
+        Collections.addAll(text,tmp2.split("\n"));
         //autocorrection syntaxique
+
     }
 
 

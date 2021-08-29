@@ -17,6 +17,13 @@ public class VueMenu implements Observateur{
         twixIG.open();
     }
 
+    /**
+     * close application
+     */
+    public void quit(){
+        System.exit(0);
+    }
+
     @Override
     public void reagir() {
 
