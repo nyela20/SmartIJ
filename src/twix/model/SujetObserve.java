@@ -10,7 +10,7 @@ public abstract class SujetObserve {
 
     public SujetObserve(){ }
     /**
-     * ajoute une Observateur
+     * ajoute un Observateur
      * @param observateur la observateur
      */
     public void ajouter(Observateur observateur) {

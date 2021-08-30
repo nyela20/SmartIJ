@@ -96,7 +96,7 @@ public class TwixIG extends SujetObserve{
         ArrayList<String> text = new ArrayList<>();
         Collections.addAll(text, resultSplit.split("\n"));
         autoCorrect(text);
-        System.out.println(text + "\n\n");
+        //System.out.println(text + "\n\n");
         if (!userWord.isEmpty() && !text.isEmpty()) {
             if (!suggestWord(text, userWord).isEmpty()) {
                 suggestForUser(suggestWord(text, userWord), userWord);
@@ -108,7 +108,6 @@ public class TwixIG extends SujetObserve{
 
     private void suggestForUser(ArrayList<String> suggestion, String userWord){
         VueBoite vueBoite = new VueBoite(suggestion,this,userWord);
-        System.out.println("vous avez choisie " + vueBoite.getResult());
     }
 
     /**
