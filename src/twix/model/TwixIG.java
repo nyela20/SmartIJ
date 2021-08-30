@@ -37,7 +37,7 @@ public class TwixIG extends SujetObserve{
      */
     public void open() {
         try {
-            JFileChooser jFileChooser = new JFileChooser("src/twix/sources");
+            JFileChooser jFileChooser = new JFileChooser("src/twix/tools/page/pagetxt");
             jFileChooser.setMultiSelectionEnabled(false);
             int res = jFileChooser.showSaveDialog(jFileChooser.getParent());
             if (res == JFileChooser.APPROVE_OPTION) {
@@ -49,7 +49,7 @@ public class TwixIG extends SujetObserve{
             }
             notifierObservateur();
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -58,7 +58,6 @@ public class TwixIG extends SujetObserve{
             if(!Files.exists(Paths.get(pathname + "/file.xlsx"))){
                 Path file = Files.createFile(Paths.get(pathname + "/file.xlsx"));
                 fileCalc = file.toFile();
-                assert(fileCalc != null);
                 writeXlsx(".");
             }else{
                 Files.delete(Paths.get(pathname + "/file.xlsx"));
