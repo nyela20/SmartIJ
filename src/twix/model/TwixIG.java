@@ -1,10 +1,14 @@
 package twix.model;
 
 import javafx.scene.control.TextInputDialog;
+import twix.exceptions.ExceptionTwix;
 import twix.views.VueBoite;
 
 import javax.swing.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -14,12 +18,14 @@ public class TwixIG extends SujetObserve{
 
 
     private File file;
+    private File fileCalc;
     private int state;
     private ArrayList<String> tabUnite = new ArrayList<>();
 
     public TwixIG(){
         super();
         this.file = null;
+        this.fileCalc = null;
         this.state = 0;
         this.tabUnite.add("u");
         this.tabUnite.add("m2");
@@ -29,37 +35,82 @@ public class TwixIG extends SujetObserve{
     /**
      * Let the user choose a file
      */
-    public void open(){
-        JFileChooser jFileChooser = new JFileChooser("src/twix/sources");
-        jFileChooser.setMultiSelectionEnabled(false);
-        int res = jFileChooser.showSaveDialog(jFileChooser.getParent());
-        if(res == JFileChooser.APPROVE_OPTION){
-            this.file = jFileChooser.getSelectedFile();
-            this.state = 1;
+    public void open() {
+        try {
+            JFileChooser jFileChooser = new JFileChooser("src/twix/sources");
+            jFileChooser.setMultiSelectionEnabled(false);
+            int res = jFileChooser.showSaveDialog(jFileChooser.getParent());
+            if (res == JFileChooser.APPROVE_OPTION) {
+                file = jFileChooser.getSelectedFile();
+                createXlsx(file.getParentFile().getPath())
+                ;state = 1;
+            } else {
+                jFileChooser.cancelSelection();
+            }
+            notifierObservateur();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        notifierObservateur();
     }
+
+    private void createXlsx(String pathname){
+        try {
+            if(!Files.exists(Paths.get(pathname + "/file.xlsx"))){
+                Path file = Files.createFile(Paths.get(pathname + "/file.xlsx"));
+                fileCalc = file.toFile();
+                assert(fileCalc != null);
+                writeXlsx(".");
+            }else{
+                Files.delete(Paths.get(pathname + "/file.xlsx"));
+                createXlsx(pathname);
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void writeXlsx(String write){
+        FileWriter flot;
+        BufferedWriter flotFiltre;
+        try {
+            flot = new FileWriter(fileCalc);
+            flotFiltre = new BufferedWriter(flot);
+            flotFiltre.write(write);
+            flotFiltre.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     /**
      * Find the word in the file
      */
-    public void search(){
+    public void search() {
         TextInputDialog textInputDialog = new TextInputDialog();
         textInputDialog.setHeaderText("Choisir un élément");
         textInputDialog.showAndWait();
         String userWord = textInputDialog.getEditor().getText();
-        String resultSplit = read().toString().replaceAll(" ","\n");
+        String resultSplit = read().toString().replaceAll(" ", "\n");
         ArrayList<String> text = new ArrayList<>();
-        Collections.addAll(text,resultSplit.split("\n"));
+        Collections.addAll(text, resultSplit.split("\n"));
         autoCorrect(text);
         System.out.println(text + "\n\n");
-        suggestForUser(suggestWord(text,userWord),userWord);
+        if (!userWord.isEmpty() && !text.isEmpty()) {
+            if (!suggestWord(text, userWord).isEmpty()) {
+                suggestForUser(suggestWord(text, userWord), userWord);
+            }else{
+                new ExceptionTwix("Aucun mot correspondant");
+            }
+        }
     }
 
     private void suggestForUser(ArrayList<String> suggestion, String userWord){
         VueBoite vueBoite = new VueBoite(suggestion,this,userWord);
+        System.out.println("vous avez choisie " + vueBoite.getResult());
     }
-
 
     /**
      * renvoie une suggestion de chiffre
@@ -70,18 +121,19 @@ public class TwixIG extends SujetObserve{
     public ArrayList<String> suggestWord(ArrayList<String> text, String userword) {
         ArrayList<String> suggestion = new ArrayList<>();
         int index = searchWord(text, userword, 0);
-        boolean stop = false;
-        while(!stop) {
-            index = searchFirstNumberFrom(text, index + 1);
-            if(searchWord(text,userword,index) == -1) {
-                stop = true;
-                if(estUnEntier(text.get(index+1))){
-                    stop = false;
+        if(index > 0) {
+            boolean stop = false;
+            while (!stop) {
+                index = searchFirstNumberFrom(text, index + 1);
+                if (searchWord(text, userword, index) == -1) {
+                    stop = true;
+                    if (estUnEntier(text.get(index + 1))) {
+                        stop = false;
+                    }
                 }
+                suggestion.add(text.get(index));
             }
-            suggestion.add(text.get(index));
         }
-        System.out.println(suggestion);
         return suggestion;
     }
 
@@ -153,12 +205,13 @@ public class TwixIG extends SujetObserve{
         BufferedReader bufferedreader = null;
         FileReader filereader = null;
         try {
-            filereader = new FileReader("src/twix/sources/"+file.getName());
-            bufferedreader = new BufferedReader(filereader);
-            String strCurrentLine;
-            while ((strCurrentLine = bufferedreader.readLine()) != null) {
-                stringBuilder.append(strCurrentLine);
-                //System.out.println(strCurrentLine);
+            filereader = new FileReader(file.getPath());
+            if(file.length() != 0) {
+                bufferedreader = new BufferedReader(filereader);
+                String strCurrentLine;
+                while ((strCurrentLine = bufferedreader.readLine()) != null) {
+                    stringBuilder.append(strCurrentLine);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -180,6 +233,7 @@ public class TwixIG extends SujetObserve{
      */
     private static boolean equals(String a, String b){
         if(a.length() == 0) return false;
+        if(b.length() < a.length()) return false;
         for(int i=0; i < a.length() ; i++){
             if(a.charAt(i) != b.charAt(i))
                 return false;
@@ -192,9 +246,7 @@ public class TwixIG extends SujetObserve{
     }
 
 
-
     public String getFileName(){
         return file.getName();
     }
-
 }

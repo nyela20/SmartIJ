@@ -24,6 +24,8 @@ public class VueMenu implements Observateur{
         System.exit(0);
     }
 
+
+
     @Override
     public void reagir() {
 

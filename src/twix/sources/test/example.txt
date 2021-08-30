@@ -49,7 +49,7 @@
  
 
 METRES OPERATIONNELS - Bâtiment Fabrique
-Légende] Modes constuois Quentié | Unité
+Légende] Modes constructions Quantité | Unité
 Semelles filantes 10 u
 | Semelles isolées 10 u
 Eu Fosse ascenseur 10 u
