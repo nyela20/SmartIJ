@@ -69,7 +69,7 @@ public class TwixIG extends SujetObserve{
     }
 
 
-    private void writeXlsx(String write){
+    public void writeXlsx(String write){
         FileWriter flot;
         BufferedWriter flotFiltre;
         try {
@@ -81,7 +81,6 @@ public class TwixIG extends SujetObserve{
             e.printStackTrace();
         }
     }
-
 
 
     /**
@@ -107,7 +106,7 @@ public class TwixIG extends SujetObserve{
     }
 
     private void suggestForUser(ArrayList<String> suggestion, String userWord){
-        VueBoite vueBoite = new VueBoite(suggestion,this,userWord);
+        new VueBoite(suggestion,this,userWord);
     }
 
     /**
@@ -178,7 +177,6 @@ public class TwixIG extends SujetObserve{
         text.clear();
         Collections.addAll(text,tmp2.split("\n"));
         //autocorrection syntaxique
-
     }
 
 

@@ -11,15 +11,18 @@ import java.util.Objects;
 public class VueBoite extends ChoiceDialog{
 
     private final TwixIG twixIG;
+    private final String userWord;
 
-    public VueBoite(ArrayList<String> suggestion, TwixIG twixIG,String userword) {
+    public VueBoite(ArrayList<String> suggestion, TwixIG twixIG, String userWord) {
         super();
         this.twixIG = twixIG;
-        aspect(userword);
+        this.userWord = userWord;
+        aspect();
         add(suggestion);
         showAndWait();
         if(getResult() == null) setResult("");
         traiter(getResult().toString());
+
     }
 
     public void traiter(String choice) {
@@ -30,24 +33,27 @@ public class VueBoite extends ChoiceDialog{
                 traiter("Saisir...");
             }
             else{
-                System.out.println("Je suis égale à " + boxChoice.getEditor().getText());
+                write(boxChoice.getResult());
             }
         }else {
             if (!choice.isEmpty()) {
-                System.out.println("Je suis égale à " + choice);
+                write(choice);
             }
         }
     }
 
-    public void ecrire(String choice){
-
+    /**
+     * ecriture dans .xlsx
+     * @param choice l'écrit
+     */
+    public void write(String choice){
+        twixIG.writeXlsx(choice);
     }
 
-    public void aspect(String userword){
-
+    public void aspect(){
         setHeight(200);
         setWidth(200);
-        setHeaderText(userword);
+        setHeaderText(userWord);
         setTitle("Proposition");
         setContentText("Select");
     }

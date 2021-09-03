@@ -68,5 +68,6 @@ count(){
 
 cr_rep
 count 
+echo "Fin de traitement."
 
 
