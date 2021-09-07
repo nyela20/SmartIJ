@@ -5,16 +5,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import twix.exceptions.ExceptionTwix;
 import twix.model.TwixIG;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class VueTwix implements Observateur{
 
     @FXML
     private Label filename;
+    @FXML
+    private Label levelname;
     @FXML
     private Button buttonSearch;
 
@@ -41,6 +41,8 @@ public class VueTwix implements Observateur{
     @Override
     public void reagir() throws IOException {
         filename.setText("Vous avez choisi le fichier : " + twixIG.getFileName());
+        if(twixIG.getActualLevelName() != null)
+           levelname.setText("Level actuel : " + twixIG.getActualLevelName());
         if(twixIG.getState() == 1){
             buttonSearch.setVisible(true);
         }

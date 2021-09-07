@@ -1,7 +1,13 @@
 package twix.model;
 
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import twix.exceptions.ExceptionTwix;
+import twix.fabrics.FabricRowsAndCell;
 import twix.views.VueBoite;
 
 import javax.swing.*;
@@ -9,20 +15,22 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 
-public class TwixIG extends SujetObserve{
-
+public class TwixIG extends SujetObserve {
 
 
     private File file;
     private File fileCalc;
     private int state;
-    private ArrayList<String> tabUnite = new ArrayList<>();
+    private String actualLevel;
+    private final ArrayList<String> tabUnite = new ArrayList<>();
+    private final ArrayList<LevelXlsx> tabLevel = new ArrayList<>();
+    private final XSSFWorkbook workbook = new XSSFWorkbook();
+    private final XSSFSheet sheet = workbook.createSheet();
 
-    public TwixIG(){
+    public TwixIG() {
         super();
         this.file = null;
         this.fileCalc = null;
@@ -30,7 +38,54 @@ public class TwixIG extends SujetObserve{
         this.tabUnite.add("u");
         this.tabUnite.add("m2");
         this.tabUnite.add("ml");
+        this.tabUnite.add("m²");
     }
+
+
+
+    public int numberOfLevel() {
+        return tabLevel.size();
+    }
+
+    public String getActualLevelName() {
+        return actualLevel;
+    }
+
+    public LevelXlsx getLevel(String name){
+        for(LevelXlsx levelXlsx : tabLevel){
+            if(levelXlsx.getLevelname().equals(name))
+                return levelXlsx;
+        }
+        return null;
+    }
+
+    public int lastRowIdLevel(String nameLevel){
+        return getLevel(nameLevel).getRowid();
+    }
+
+
+    public void changeLevel() {
+        if (file != null) {
+            if (numberOfLevel() > 0) {
+                ChoiceDialog choiceDialog = new ChoiceDialog<>();
+                ArrayList<String> nametabLevel = new ArrayList<>();
+                for (LevelXlsx levelXlsx : tabLevel) {
+                    nametabLevel.add(levelXlsx.getLevelname());
+                }
+                choiceDialog.getItems().addAll(nametabLevel);
+                choiceDialog.showAndWait();
+                if (choiceDialog.getResult() != null && !choiceDialog.getResult().toString().isEmpty()) {
+                    this.actualLevel = choiceDialog.getResult().toString();
+                }
+                notifierObservateur();
+            } else {
+                new ExceptionTwix("Vous n'avez ajouter aucun level");
+            }
+        } else {
+            new ExceptionTwix("Vous n'avez pas ouvert de fichier");
+        }
+    }
+
 
     /**
      * Let the user choose a file
@@ -43,40 +98,89 @@ public class TwixIG extends SujetObserve{
             if (res == JFileChooser.APPROVE_OPTION) {
                 file = jFileChooser.getSelectedFile();
                 createXlsx(file.getParentFile().getPath())
-                ;state = 1;
+                ;
+                state = 1;
             } else {
                 jFileChooser.cancelSelection();
             }
             notifierObservateur();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private void createXlsx(String pathname){
-        try {
-            if(!Files.exists(Paths.get(pathname + "/file.xlsx"))){
-                Path file = Files.createFile(Paths.get(pathname + "/file.xlsx"));
-                fileCalc = file.toFile();
-                writeXlsx(".");
-            }else{
-                Files.delete(Paths.get(pathname + "/file.xlsx"));
-                createXlsx(pathname);
-            }
-        }catch (IOException e) {
-            e.printStackTrace();
+    public void addLevel() {
+        if (file != null) {
+            TextInputDialog textInputDialog = new TextInputDialog();
+            textInputDialog.setContentText("Ajouter un level");
+            textInputDialog.setHeaderText("Nouveau level");
+            textInputDialog.setTitle("Ajouter");
+            Optional<String> result = textInputDialog.showAndWait();
+            result.ifPresent(name -> {
+                LevelXlsx levelXlsx = new LevelXlsx(textInputDialog.getResult(), FabricRowsAndCell.getInstance().getcellidLevel());
+                tabLevel.add(levelXlsx);
+                //écrire le level dans le xlsx une fois ajouter
+                writeLevel();
+            });
+        } else {
+            new ExceptionTwix("Vous n'avez pas ouvert de fichier");
         }
     }
 
 
-    public void writeXlsx(String write){
-        FileWriter flot;
-        BufferedWriter flotFiltre;
+    private void createXlsx(String pathname) {
         try {
-            flot = new FileWriter(fileCalc);
-            flotFiltre = new BufferedWriter(flot);
-            flotFiltre.write(write);
-            flotFiltre.close();
+            if (!Files.exists(Paths.get(pathname + "/file.xlsx"))) {
+                Path file = Files.createFile(Paths.get(pathname + "/file.xlsx"));
+                fileCalc = file.toFile();
+            } else {
+                Files.delete(Paths.get(pathname + "/file.xlsx"));
+                createXlsx(pathname);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeLevel() {
+        XSSFRow row;
+        row = sheet.createRow(2);
+            for (LevelXlsx obj : tabLevel) {
+                Cell cell = row.createCell(obj.getCellid());
+                cell.setCellValue(obj.getLevelname());
+            }
+            try {
+                FileOutputStream out = new FileOutputStream(fileCalc);
+                workbook.write(out);
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
+
+
+
+
+    public void write(ElementXlsx elementXlsx) {
+        XSSFRow row;
+        row = sheet.createRow(lastRowIdLevel(elementXlsx.getNameElement()));
+        int cellid = 1;
+        Cell cell = row.createCell(cellid);
+        cell.setCellValue(elementXlsx.getNameElement());
+        cellid++;
+        cell.setCellValue(elementXlsx.getUnitElement());
+        cellid = elementXlsx.getCellid();
+        cell.setCellValue(elementXlsx.getvalueElement());
+        /*
+        for (Object obj : elementXlsx.getObjects()) {
+            Cell cell = row.createCell(cellid++);
+            cell.setCellValue((String) obj);
+        }
+         */
+        try {
+            FileOutputStream out = new FileOutputStream(fileCalc);
+            workbook.write(out);
+            out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,7 +190,7 @@ public class TwixIG extends SujetObserve{
     /**
      * Find the word in the file
      */
-    public void search() {
+    public void search(){
         TextInputDialog textInputDialog = new TextInputDialog();
         textInputDialog.setHeaderText("Choisir un élément");
         textInputDialog.showAndWait();
@@ -95,30 +199,71 @@ public class TwixIG extends SujetObserve{
         ArrayList<String> text = new ArrayList<>();
         Collections.addAll(text, resultSplit.split("\n"));
         autoCorrect(text);
-        //System.out.println(text + "\n\n");
         if (!userWord.isEmpty() && !text.isEmpty()) {
             if (!suggestWord(text, userWord).isEmpty()) {
                 suggestForUser(suggestWord(text, userWord), userWord);
-            }else{
+            } else {
                 new ExceptionTwix("Aucun mot correspondant");
             }
         }
     }
 
-    private void suggestForUser(ArrayList<String> suggestion, String userWord){
-        new VueBoite(suggestion,this,userWord);
+    private void suggestForUser(ArrayList<String> suggestion, String userWord) {
+        new VueBoite(suggestion, this, userWord);
+    }
+
+
+    /**
+     * ajoute une unité
+     */
+    public void addUnit() {
+        if (file != null) {
+            TextInputDialog inputDialog = new TextInputDialog();
+            inputDialog.setHeaderText("Les unités actuelles : \n" + tabUnite);
+            inputDialog.setContentText("ajouter");
+            inputDialog.setTitle("Ajouter unités");
+            Optional<String> result = inputDialog.showAndWait();
+            result.ifPresent(name -> {
+                if(!result.get().isEmpty()) {
+                    tabUnite.add(inputDialog.getResult());
+                }
+            });
+        }
+        else{
+            new ExceptionTwix("Vous n'avez pas ouvert de fichier");
+        }
+    }
+
+
+
+    /**
+     * Trouve l'unité d'un chiffre donné
+     *
+     * @param text  le texte
+     * @param index l'index du chiffre en question
+     */
+    private String findUnit(ArrayList<String> text, int index) {
+        for (int i = index + 1; i < text.size(); i++) {
+            for (String unit : tabUnite) {
+                if (text.get(i).equals(unit)) {
+                    return text.get(i);
+                }
+            }
+        }
+        return ".";
     }
 
     /**
      * renvoie une suggestion de chiffre
-     * @param text le fichier txt
+     *
+     * @param text     le fichier txt
      * @param userword le mot cké
      * @return un tableau contenant les suggestions
      */
     public ArrayList<String> suggestWord(ArrayList<String> text, String userword) {
         ArrayList<String> suggestion = new ArrayList<>();
         int index = searchWord(text, userword, 0);
-        if(index > 0) {
+        if (index > 0) {
             boolean stop = false;
             while (!stop) {
                 index = searchFirstNumberFrom(text, index + 1);
@@ -128,20 +273,21 @@ public class TwixIG extends SujetObserve{
                         stop = false;
                     }
                 }
-                suggestion.add(text.get(index));
+                //suggestion.add(findUnit(text,index) + " " +  text.get(index));
+                suggestion.add(findUnit(text,index) + " " +  text.get(index));
+                //System.out.println("Nous avons trouvé : " + text.get(index) + " son unité est : " + findUnit(text,index));
             }
         }
         return suggestion;
     }
 
-    public int searchFirstNumberFrom(ArrayList<String> text,int index){
-        for(int i=index; i< text.size(); i++){
-            if(estUnEntier(text.get(i)))
+    public int searchFirstNumberFrom(ArrayList<String> text, int index) {
+        for (int i = index; i < text.size(); i++) {
+            if (estUnEntier(text.get(i)))
                 return i;
         }
         return -1;
     }
-
 
 
     /**
@@ -160,23 +306,24 @@ public class TwixIG extends SujetObserve{
         return true;
     }
 
-    private void autoCorrect(ArrayList<String> text){
+    private void autoCorrect(ArrayList<String> text) {
         //autocorrection séparation mot
-        for(String word : text){
-            for(String unit : this.tabUnite) {
+        for (String word : text) {
+            for (String unit : this.tabUnite) {
                 StringBuilder s = new StringBuilder(word);
                 if (word.startsWith(unit)) {
-                    s.replace(0, 0, unit+"\n");
-                    for(int i=0; i< unit.length(); i++) s.deleteCharAt(unit.length() + 1);
-                    text.set(text.indexOf(word),s.toString());
+                    s.replace(0, 0, unit + "\n");
+                    for (int i = 0; i < unit.length(); i++) s.deleteCharAt(unit.length() + 1);
+                    text.set(text.indexOf(word), s.toString());
                 }
             }
         }
         String tmp = text.toString().replaceAll(",", "\n");
-        String tmp2 = tmp.replaceAll(" ","");
+        String tmp2 = tmp.replaceAll(" ", "");
         text.clear();
-        Collections.addAll(text,tmp2.split("\n"));
+        Collections.addAll(text, tmp2.split("\n"));
         //autocorrection syntaxique
+
     }
 
 
@@ -184,7 +331,7 @@ public class TwixIG extends SujetObserve{
      * Search word, return the index of the first letter
      */
 
-    private int searchWord(ArrayList<String> text,String userword, int start){
+    private int searchWord(ArrayList<String> text, String userword, int start) {
         for (int i = start; i < text.size(); i++) {
             if (equals(text.get(i), userword)) {
                 return i;
@@ -196,13 +343,13 @@ public class TwixIG extends SujetObserve{
     /**
      * lecture du fichier
      */
-    private StringBuilder read(){
+    private StringBuilder read() {
         StringBuilder stringBuilder = new StringBuilder();
         BufferedReader bufferedreader = null;
         FileReader filereader = null;
         try {
             filereader = new FileReader(file.getPath());
-            if(file.length() != 0) {
+            if (file.length() != 0) {
                 bufferedreader = new BufferedReader(filereader);
                 String strCurrentLine;
                 while ((strCurrentLine = bufferedreader.readLine()) != null) {
@@ -227,11 +374,11 @@ public class TwixIG extends SujetObserve{
     /**
      * La fonction vérifie que deux mots sont pareil
      */
-    private static boolean equals(String a, String b){
-        if(a.length() == 0) return false;
-        if(b.length() < a.length()) return false;
-        for(int i=0; i < a.length() ; i++){
-            if(a.charAt(i) != b.charAt(i))
+    private static boolean equals(String a, String b) {
+        if (a.length() == 0) return false;
+        if (b.length() < a.length()) return false;
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i) != b.charAt(i))
                 return false;
         }
         return true;
@@ -242,7 +389,12 @@ public class TwixIG extends SujetObserve{
     }
 
 
-    public String getFileName(){
-        return file.getName();
+    public String getFileName() {
+        if(file != null) {
+            return file.getName();
+        }else{
+            new ExceptionTwix("Vous n'avez pas ouvert de fichier");
+            return "";
+        }
     }
 }

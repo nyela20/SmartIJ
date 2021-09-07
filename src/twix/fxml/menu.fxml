@@ -10,6 +10,13 @@
                <MenuItem mnemonicParsing="false" onAction="#open" text="Open" />
             <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
            </Menu>
+         <Menu mnemonicParsing="false" text="Edit">
+            <items>
+               <MenuItem mnemonicParsing="false" onAction="#addUnit" text="Add unit" />
+               <MenuItem mnemonicParsing="false" onAction="#addLevel" text="Add level" />
+               <MenuItem mnemonicParsing="false" onAction="#changeLevel" text="Change level" />
+            </items>
+         </Menu>
        </MenuBar>
    </top>
 </BorderPane>

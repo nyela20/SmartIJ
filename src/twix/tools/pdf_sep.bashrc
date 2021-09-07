@@ -66,8 +66,10 @@ count(){
 
 }
 
+echo "traitement en cours ..."
 cr_rep
 count 
+
 echo "Fin de traitement."
 
 

@@ -1,6 +1,8 @@
 package twix.views;
 
+import twix.exceptions.ExceptionTwix;
 import twix.model.TwixIG;
+
 
 public class VueMenu implements Observateur{
 
@@ -15,6 +17,12 @@ public class VueMenu implements Observateur{
      */
     public void open(){
         twixIG.open();
+        //on ajoute les unité une fois le fichier ouvert
+        twixIG.addUnit();
+    }
+
+    public void addUnit(){
+            twixIG.addUnit();
     }
 
     /**
@@ -24,6 +32,13 @@ public class VueMenu implements Observateur{
         System.exit(0);
     }
 
+    public void changeLevel(){
+        twixIG.changeLevel();
+    }
+
+    public void addLevel(){
+        twixIG.addLevel();
+    }
 
 
     @Override

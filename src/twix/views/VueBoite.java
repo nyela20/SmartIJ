@@ -3,9 +3,12 @@ package twix.views;
 
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
+import twix.model.ElementXlsx;
 import twix.model.TwixIG;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class VueBoite extends ChoiceDialog{
@@ -21,33 +24,45 @@ public class VueBoite extends ChoiceDialog{
         add(suggestion);
         showAndWait();
         if(getResult() == null) setResult("");
-        traiter(getResult().toString());
-
+        traiter(getResult().toString(),suggestion);
     }
 
-    public void traiter(String choice) {
+    public void traiter(String choice,ArrayList<String> suggestion) {
+        ElementXlsx elementXlsx = null;
+        ArrayList<String> suggest = new ArrayList<>();
+        suggest.addAll(List.of(choice.split(" ")));
+        //Création de l'Element
+        //Dernière ligne non écrite de la colonne
+        int rowidLastElement = twixIG.getLevel(twixIG.getActualLevelName()).getRowid();
+        //Création des objects
+        Object obj[] = new Object[3];
+        obj[0] = userWord;
+        obj[1] = suggest.get(0);
+        obj[2] = suggest.get(1);
         if (Objects.equals(choice, "Saisir...")) {
             TextInputDialog boxChoice = new TextInputDialog();
             boxChoice.showAndWait();
             if(boxChoice.getEditor().getText().isEmpty()) {
-                traiter("Saisir...");
+                traiter("Saisir...",suggestion);
             }
             else{
-                write(boxChoice.getResult());
+                 elementXlsx = new ElementXlsx(rowidLastElement,obj,userWord,twixIG.getLevel(twixIG.getActualLevelName()));
+                 write(elementXlsx);
             }
         }else {
             if (!choice.isEmpty()) {
-                write(choice);
+                elementXlsx = new ElementXlsx(rowidLastElement,obj,userWord,twixIG.getLevel(twixIG.getActualLevelName()));
+                write(elementXlsx);
             }
         }
     }
 
     /**
-     * ecriture dans .xlsx
-     * @param choice l'écrit
+     * On écrti l'élément dans le fichier xlsx
+     * @param elementXlsx l'élèment
      */
-    public void write(String choice){
-        twixIG.writeXlsx(choice);
+    public void write(ElementXlsx elementXlsx){
+        twixIG.write(elementXlsx);
     }
 
     public void aspect(){
