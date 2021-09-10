@@ -1,30 +1,30 @@
-package twix.model;
+package smartij.model;
 
-public class ElementXlsx {
+public class ElementIG {
     private final int rowid;
     private final int cellid;
     private final Object[] objects;
     private final String name;
 
 
-    public ElementXlsx(int rowid, Object[] objects, String name, LevelXlsx levelXlsx) {
+    public ElementIG(int rowid, Object[] objects, String name, NiveauIG niveauIG) {
         this.rowid = rowid;
-        this.cellid = levelXlsx.getCellid();
+        this.cellid = niveauIG.getCellid();
         this.objects = objects;
         this.name = name;
-        levelXlsx.setRowid(rowid++);
+        niveauIG.setRowid(niveauIG.getRowid() +1);
     }
 
     public String getNameElement(){
         return name;
     }
 
-    public int getUnitElement(){
-        return (int) objects[1];
+    public String getUnitElement(){
+        return  objects[1].toString();
     }
 
     public int getvalueElement(){
-        return (int) objects[2];
+        return Integer.parseInt(objects[2].toString());
     }
 
     public int getCellid() {

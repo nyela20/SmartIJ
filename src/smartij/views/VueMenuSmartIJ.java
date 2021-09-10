@@ -1,28 +1,27 @@
-package twix.views;
+package smartij.views;
 
-import twix.exceptions.ExceptionTwix;
-import twix.model.TwixIG;
+import smartij.model.SmartIG;
 
 
-public class VueMenu implements Observateur{
+public class VueMenuSmartIJ implements PatternObserver {
 
-    private final TwixIG twixIG;
+    private final SmartIG smartIG;
 
-    public VueMenu(TwixIG twixIG) {
-        this.twixIG = twixIG;
+    public VueMenuSmartIJ(SmartIG smartIG) {
+        this.smartIG = smartIG;
     }
 
     /**
      * open a html file
      */
     public void open(){
-        twixIG.open();
+        smartIG.open();
         //on ajoute les unité une fois le fichier ouvert
-        twixIG.addUnit();
+        smartIG.addUnit();
     }
 
     public void addUnit(){
-            twixIG.addUnit();
+            smartIG.addUnit();
     }
 
     /**
@@ -33,11 +32,11 @@ public class VueMenu implements Observateur{
     }
 
     public void changeLevel(){
-        twixIG.changeLevel();
+        smartIG.changeLevel();
     }
 
     public void addLevel(){
-        twixIG.addLevel();
+        smartIG.addLevel();
     }
 
 

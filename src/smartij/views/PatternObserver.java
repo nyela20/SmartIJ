@@ -1,7 +1,7 @@
-package twix.views;
+package smartij.views;
 
 import java.io.IOException;
 
-public interface Observateur {
+public interface PatternObserver {
     void reagir() throws IOException;
 }

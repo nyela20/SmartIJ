@@ -1,11 +1,11 @@
-package twix.exceptions;
+package smartij.exceptions;
 
 import javafx.scene.control.Alert;
 
-public class ExceptionTwix extends Exception {
 
+public class BoxDialogExceptionSmartIJ {
 
-    public ExceptionTwix(String message){
+    public BoxDialogExceptionSmartIJ(String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeight(100);
         alert.setWidth(100);

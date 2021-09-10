@@ -1,4 +1,4 @@
-package twix.model;
+package smartij.model;
 
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
@@ -6,9 +6,11 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import twix.exceptions.ExceptionTwix;
-import twix.fabrics.FabricRowsAndCell;
-import twix.views.VueBoite;
+import smartij.exceptions.BoxDialogExceptionSmartIJ;
+import smartij.exceptions.ExceptionSmartIJ;
+import smartij.fabrics.FabricRowsIdAndCellId;
+import smartij.views.VueBoxChoiceSmartIJ;
+import smartij.views.VueBoxDialogSmartIJ;
 
 import javax.swing.*;
 import java.io.*;
@@ -18,7 +20,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-public class TwixIG extends SujetObserve {
+public class SmartIG extends PatternObervable {
 
 
     private File file;
@@ -26,11 +28,11 @@ public class TwixIG extends SujetObserve {
     private int state;
     private String actualLevel;
     private final ArrayList<String> tabUnite = new ArrayList<>();
-    private final ArrayList<LevelXlsx> tabLevel = new ArrayList<>();
+    private final ArrayList<NiveauIG> tabLevel = new ArrayList<>();
     private final XSSFWorkbook workbook = new XSSFWorkbook();
     private final XSSFSheet sheet = workbook.createSheet();
 
-    public TwixIG() {
+    public SmartIG() {
         super();
         this.file = null;
         this.fileCalc = null;
@@ -47,14 +49,23 @@ public class TwixIG extends SujetObserve {
         return tabLevel.size();
     }
 
+    public boolean isvalid(String m){
+        boolean b = m != null;
+        return b && !m.isEmpty();
+    }
+
+    public boolean fileExist(){
+        return file != null;
+    }
+
     public String getActualLevelName() {
         return actualLevel;
     }
 
-    public LevelXlsx getLevel(String name){
-        for(LevelXlsx levelXlsx : tabLevel){
-            if(levelXlsx.getLevelname().equals(name))
-                return levelXlsx;
+    public NiveauIG getLevel(String name){
+        for(NiveauIG niveauIG : tabLevel){
+            if(equals(niveauIG.getLevelname(),name))
+                return niveauIG;
         }
         return null;
     }
@@ -65,12 +76,12 @@ public class TwixIG extends SujetObserve {
 
 
     public void changeLevel() {
-        if (file != null) {
+        if (fileExist()) {
             if (numberOfLevel() > 0) {
-                ChoiceDialog choiceDialog = new ChoiceDialog<>();
+                ChoiceDialog<Object> choiceDialog = new ChoiceDialog<>();
                 ArrayList<String> nametabLevel = new ArrayList<>();
-                for (LevelXlsx levelXlsx : tabLevel) {
-                    nametabLevel.add(levelXlsx.getLevelname());
+                for (NiveauIG niveauIG : tabLevel) {
+                    nametabLevel.add(niveauIG.getLevelname());
                 }
                 choiceDialog.getItems().addAll(nametabLevel);
                 choiceDialog.showAndWait();
@@ -79,10 +90,10 @@ public class TwixIG extends SujetObserve {
                 }
                 notifierObservateur();
             } else {
-                new ExceptionTwix("Vous n'avez ajouter aucun level");
+                new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Vous n'avez ajouter aucun level").getMessage());
             }
         } else {
-            new ExceptionTwix("Vous n'avez pas ouvert de fichier");
+            new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Vous n'avez pas ouvert de fichier").getMessage());
         }
     }
 
@@ -92,7 +103,7 @@ public class TwixIG extends SujetObserve {
      */
     public void open() {
         try {
-            JFileChooser jFileChooser = new JFileChooser("src/twix/tools/page/pagetxt");
+            JFileChooser jFileChooser = new JFileChooser("src/smartij/tools/page/pagetxt");
             jFileChooser.setMultiSelectionEnabled(false);
             int res = jFileChooser.showSaveDialog(jFileChooser.getParent());
             if (res == JFileChooser.APPROVE_OPTION) {
@@ -110,20 +121,20 @@ public class TwixIG extends SujetObserve {
     }
 
     public void addLevel() {
-        if (file != null) {
+        if (fileExist()) {
             TextInputDialog textInputDialog = new TextInputDialog();
             textInputDialog.setContentText("Ajouter un level");
             textInputDialog.setHeaderText("Nouveau level");
             textInputDialog.setTitle("Ajouter");
             Optional<String> result = textInputDialog.showAndWait();
             result.ifPresent(name -> {
-                LevelXlsx levelXlsx = new LevelXlsx(textInputDialog.getResult(), FabricRowsAndCell.getInstance().getcellidLevel());
-                tabLevel.add(levelXlsx);
+                NiveauIG niveauIG = new NiveauIG(textInputDialog.getResult(), FabricRowsIdAndCellId.getInstance().getcellidLevel());
+                tabLevel.add(niveauIG);
                 //écrire le level dans le xlsx une fois ajouter
                 writeLevel();
             });
         } else {
-            new ExceptionTwix("Vous n'avez pas ouvert de fichier");
+            new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Vous n'avez pas ouvert de fichier").getMessage());
         }
     }
 
@@ -145,7 +156,7 @@ public class TwixIG extends SujetObserve {
     public void writeLevel() {
         XSSFRow row;
         row = sheet.createRow(2);
-            for (LevelXlsx obj : tabLevel) {
+            for (NiveauIG obj : tabLevel) {
                 Cell cell = row.createCell(obj.getCellid());
                 cell.setCellValue(obj.getLevelname());
             }
@@ -161,22 +172,19 @@ public class TwixIG extends SujetObserve {
 
 
 
-    public void write(ElementXlsx elementXlsx) {
+    public void write(ElementIG elementIG) {
         XSSFRow row;
-        row = sheet.createRow(lastRowIdLevel(elementXlsx.getNameElement()));
-        int cellid = 1;
-        Cell cell = row.createCell(cellid);
-        cell.setCellValue(elementXlsx.getNameElement());
+        row = sheet.createRow(lastRowIdLevel(getActualLevelName()));
+        System.out.println("level actuel : " + lastRowIdLevel(getActualLevelName()));
+        int cellid = 0;
         cellid++;
-        cell.setCellValue(elementXlsx.getUnitElement());
-        cellid = elementXlsx.getCellid();
-        cell.setCellValue(elementXlsx.getvalueElement());
-        /*
-        for (Object obj : elementXlsx.getObjects()) {
-            Cell cell = row.createCell(cellid++);
-            cell.setCellValue((String) obj);
-        }
-         */
+        Cell cellName = row.createCell(cellid);
+        cellName.setCellValue(elementIG.getNameElement());
+        cellid++;
+        Cell cellUnit = row.createCell(cellid);
+        cellUnit.setCellValue(elementIG.getUnitElement());
+        Cell cellValue = row.createCell(getLevel(actualLevel).getCellid());
+        cellValue.setCellValue(elementIG.getvalueElement());
         try {
             FileOutputStream out = new FileOutputStream(fileCalc);
             workbook.write(out);
@@ -203,13 +211,13 @@ public class TwixIG extends SujetObserve {
             if (!suggestWord(text, userWord).isEmpty()) {
                 suggestForUser(suggestWord(text, userWord), userWord);
             } else {
-                new ExceptionTwix("Aucun mot correspondant");
+                new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Aucun mot correspondant").getMessage());
             }
         }
     }
 
     private void suggestForUser(ArrayList<String> suggestion, String userWord) {
-        new VueBoite(suggestion, this, userWord);
+        new VueBoxChoiceSmartIJ(suggestion, this, userWord);
     }
 
 
@@ -217,20 +225,13 @@ public class TwixIG extends SujetObserve {
      * ajoute une unité
      */
     public void addUnit() {
-        if (file != null) {
-            TextInputDialog inputDialog = new TextInputDialog();
-            inputDialog.setHeaderText("Les unités actuelles : \n" + tabUnite);
-            inputDialog.setContentText("ajouter");
-            inputDialog.setTitle("Ajouter unités");
-            Optional<String> result = inputDialog.showAndWait();
-            result.ifPresent(name -> {
-                if(!result.get().isEmpty()) {
-                    tabUnite.add(inputDialog.getResult());
-                }
-            });
+        if (fileExist()) {
+            VueBoxDialogSmartIJ vueBoxDialogSmartIJ = new VueBoxDialogSmartIJ("Les unités actuelles : \n" + tabUnite, "ajouter", "Ajouter unité");
+            if(isvalid(vueBoxDialogSmartIJ.getAnswer()))
+                tabUnite.add(vueBoxDialogSmartIJ.getAnswer());
         }
         else{
-            new ExceptionTwix("Vous n'avez pas ouvert de fichier");
+            new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Vous n'avez pas ouvert de fichier").getMessage());
         }
     }
 
@@ -268,14 +269,9 @@ public class TwixIG extends SujetObserve {
             while (!stop) {
                 index = searchFirstNumberFrom(text, index + 1);
                 if (searchWord(text, userword, index) == -1) {
-                    stop = true;
-                    if (estUnEntier(text.get(index + 1))) {
-                        stop = false;
-                    }
+                    stop = !estUnEntier(text.get(index + 1));
                 }
-                //suggestion.add(findUnit(text,index) + " " +  text.get(index));
                 suggestion.add(findUnit(text,index) + " " +  text.get(index));
-                //System.out.println("Nous avons trouvé : " + text.get(index) + " son unité est : " + findUnit(text,index));
             }
         }
         return suggestion;
@@ -390,10 +386,10 @@ public class TwixIG extends SujetObserve {
 
 
     public String getFileName() {
-        if(file != null) {
+        if(fileExist()) {
             return file.getName();
         }else{
-            new ExceptionTwix("Vous n'avez pas ouvert de fichier");
+            new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Vous n'avez pas ouvert de fichier").getMessage());
             return "";
         }
     }

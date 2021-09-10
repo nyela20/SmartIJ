@@ -1,32 +1,21 @@
-package twix.tests;
+package smartij.tests;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import twix.model.TwixIG;
+import smartij.model.SmartIG;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 
 class TwiskTest {
 
-    TwixIG twixIG;
+    SmartIG smartIG;
     File file;
 
     @BeforeEach
     void setup(){
-        twixIG = new TwixIG();
-        file = new File("src/twix/tests/try.xlsx");
+        smartIG = new SmartIG();
+        file = new File("src/smartij/tests/try.xlsx");
     }
 
     @Test
@@ -65,7 +54,7 @@ class TwiskTest {
             }
         }
         try {
-            FileOutputStream out = new FileOutputStream(new File("src/twix/tests/try.xlsx"));
+            FileOutputStream out = new FileOutputStream(new File("src/smartij/tests/try.xlsx"));
             workbook.write(out);
             out.close();
         } catch (IOException e) {

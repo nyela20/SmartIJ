@@ -1,14 +1,11 @@
-package twix.model;
+package smartij.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class LevelXlsx {
+public class NiveauIG {
     private String levelname;
     private int rowid;
     private final int cellid;
 
-    public LevelXlsx(String levelname, int cellid){
+    public NiveauIG(String levelname, int cellid){
         this.levelname = levelname;
         this.cellid = cellid;
         this.rowid = 3;
