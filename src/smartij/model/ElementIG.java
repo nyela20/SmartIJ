@@ -7,11 +7,11 @@ public class ElementIG {
     private final String name;
 
 
-    public ElementIG(int rowid, Object[] objects, String name, NiveauIG niveauIG) {
+    public ElementIG(int rowid, Object[] objects, NiveauIG niveauIG) {
         this.rowid = rowid;
         this.cellid = niveauIG.getCellid();
         this.objects = objects;
-        this.name = name;
+        this.name = objects[0].toString();
         niveauIG.setRowid(niveauIG.getRowid() +1);
     }
 

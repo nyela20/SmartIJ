@@ -1,22 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueMenuSmartIJ">
-   <top>
-       <MenuBar style="-fx-background-color: yellow;" BorderPane.alignment="CENTER">
-           <Menu mnemonicParsing="false" text="File">
-               <MenuItem mnemonicParsing="false" onAction="#open" text="Open" />
-            <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
-           </Menu>
-         <Menu mnemonicParsing="false" text="Edit">
-            <items>
-               <MenuItem mnemonicParsing="false" onAction="#addUnit" text="Add unit" />
-               <MenuItem mnemonicParsing="false" onAction="#addLevel" text="Add level" />
-               <MenuItem mnemonicParsing="false" onAction="#changeLevel" text="Change level" />
-            </items>
-         </Menu>
-       </MenuBar>
-   </top>
+    <top>
+        <MenuBar style="-fx-background-color: yellow;" BorderPane.alignment="CENTER">
+            <Menu mnemonicParsing="false" text="File">
+                <MenuItem mnemonicParsing="false" onAction="#open" text="Open">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/ouvrir.png" />
+                     </image>
+                  </ImageView>
+               </graphic></MenuItem>
+                <MenuItem fx:id="menuquit" mnemonicParsing="false" onAction="#quit" text="Quit">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/quitter.png" />
+                     </image>
+                  </ImageView>
+               </graphic></MenuItem>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+                <MenuItem mnemonicParsing="false" onAction="#addUnit" text="Add unit">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/renommer.png" />
+                     </image>
+                  </ImageView>
+               </graphic></MenuItem>
+                <MenuItem mnemonicParsing="false" onAction="#addLevel" text="Add level">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/renommer.png" />
+                     </image>
+                  </ImageView>
+               </graphic></MenuItem>
+                <MenuItem mnemonicParsing="false" onAction="#changeLevel" text="Change level">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/renommer.png" />
+                     </image>
+                  </ImageView>
+               </graphic></MenuItem>
+                <MenuItem mnemonicParsing="false" onAction="#removeAllUnit" text="Remove all unit">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/supprimer.png" />
+                     </image>
+                  </ImageView>
+               </graphic></MenuItem>
+            </Menu>
+        </MenuBar>
+    </top>
 </BorderPane>

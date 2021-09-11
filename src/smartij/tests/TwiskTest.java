@@ -13,19 +13,19 @@ class TwiskTest {
     File file;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         smartIG = new SmartIG();
         file = new File("src/smartij/tests/try.xlsx");
     }
 
     @Test
-    void write2(){
+    void write2() {
 
     }
 
 
     @Test
-    void write(){
+    void write() {
 /*
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Student Data");

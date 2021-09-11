@@ -1,26 +1,25 @@
 package smartij.model;
 
 public class NiveauIG {
-    private String levelname;
+    private final String levelname;
     private int rowid;
     private final int cellid;
 
-    public NiveauIG(String levelname, int cellid){
+    public NiveauIG(String levelname, int cellid) {
         this.levelname = levelname;
         this.cellid = cellid;
         this.rowid = 3;
     }
 
-    public int getCellid(){
+    public int getCellid() {
         return cellid;
     }
 
-    public int getRowid(){
+    public int getRowid() {
         return rowid;
     }
 
-
-    public String getLevelname(){
+    public String getLevelname() {
         return levelname;
     }
 

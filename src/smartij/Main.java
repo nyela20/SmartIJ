@@ -12,8 +12,6 @@ import smartij.model.SmartIG;
 import java.io.IOException;
 
 public class Main extends Application {
-
-
     @Override
     public void start(Stage primaryStage) throws IOException {
         SmartIG smartIG = new SmartIG();
@@ -33,7 +31,6 @@ public class Main extends Application {
         primaryStage.setTitle("SmartIJ");
         primaryStage.setScene(new Scene(root,500,500));
         primaryStage.show();
-
     }
 
     public static void  main(String[] args){

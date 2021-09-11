@@ -4,16 +4,16 @@ public class FabricRowsIdAndCellId {
     private static final FabricRowsIdAndCellId instance = new FabricRowsIdAndCellId();
     private int cellid;
 
-    private FabricRowsIdAndCellId(){
+    private FabricRowsIdAndCellId() {
         cellid = 2;
     }
 
-    public static FabricRowsIdAndCellId getInstance(){
+    public static FabricRowsIdAndCellId getInstance() {
         return instance;
     }
 
-    public int getcellidLevel(){
+    public int getcellidLevel() {
         cellid++;
-        return cellid-1;
+        return cellid - 1;
     }
 }

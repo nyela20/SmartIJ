@@ -8,9 +8,12 @@ import java.util.ArrayList;
 public abstract class PatternObervable {
     private final ArrayList<PatternObserver> observateurPatternObserver = new ArrayList<>();
 
-    public PatternObervable(){ }
+    public PatternObervable() {
+    }
+
     /**
      * ajoute un PatternObserver
+     *
      * @param patternObserver la patternObserver
      */
     public void ajouter(PatternObserver patternObserver) {
