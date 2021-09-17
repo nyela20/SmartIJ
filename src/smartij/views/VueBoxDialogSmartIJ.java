@@ -20,6 +20,7 @@ public class VueBoxDialogSmartIJ extends TextInputDialog {
     }
 
 
+
     public String getAnswer() {
         return answer;
     }

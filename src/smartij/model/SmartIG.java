@@ -30,8 +30,10 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
     private final ArrayList<String> unitIGS = new ArrayList<>();
     private final ArrayList<NiveauIG> niveauIGS = new ArrayList<>();
     private final ArrayList<ElementIG> elementIGS = new ArrayList<>();
+    private final ArrayList<CategorieIG> categorieIGS = new ArrayList<>();
     private final XSSFWorkbook workbook = new XSSFWorkbook();
     private final XSSFSheet sheet = workbook.createSheet();
+
 
     public SmartIG() {
         super();
@@ -72,7 +74,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
      * @param name le nom du niveau
      * @return un niveau
      */
-    public NiveauIG getLevel(String name) {
+    private NiveauIG getLevel(String name) {
         for (NiveauIG niveauIG : niveauIGS) {
             if (equals(niveauIG.getLevelname(), name))
                 return niveauIG;
@@ -81,10 +83,40 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
     }
 
     /**
-     * retourne le state actuel
-     *
-     * @return le state acutel
+     * recherche et retourne un élément en mémoire
+     * @param name son npom
+     * @return un Element
      */
+    private ElementIG getElement(String name){
+        for(ElementIG elementIG : this){
+            if (Objects.equals(name, elementIG.getNameElement())) {
+                return elementIG;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * la fonction sert à verifier si un élement similaire existe déjà
+     * en mémoire
+     * @param elementIG l'élèment à vérifier
+     * @return vrai sinon faux
+     */
+    private boolean alreadyExist(ElementIG elementIG) {
+        for (ElementIG elementIG1 : elementIGS) {
+            if (Objects.equals(elementIG1.getNameElement(), elementIG.getNameElement())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+        /**
+         * retourne le state actuel
+         *
+         * @return le state acutel
+         */
     public int getState() {
         return state;
     }
@@ -110,7 +142,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
      * @param m la chaîne de caractères
      * @return true or false
      */
-    public boolean isvalid(String m) {
+    private boolean isvalid(String m) {
         boolean b = m != null;
         return b && !m.isEmpty();
     }
@@ -121,7 +153,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
      *
      * @return oui si existe, sinon non
      */
-    public boolean fileExist() {
+    private boolean fileExist() {
         return file != null;
     }
 
@@ -132,7 +164,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
      * @param nameLevel le nom du niveau
      * @return le nunméro de la dernièreligne
      */
-    public int lastRowIdLevel(String nameLevel) {
+    private int lastRowIdLevel(String nameLevel) {
         return getLevel(nameLevel).getRowid();
     }
 
@@ -143,7 +175,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
      * @param chaine la chaine à verifier
      * @return vrai si c'est un entier, sinon faux
      */
-    public boolean estUnEntier(String chaine) {
+    private boolean estUnEntier(String chaine) {
         try {
             Integer.parseInt(chaine);
         } catch (NumberFormatException e) {
@@ -230,23 +262,49 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
 
 
 
+
     /**
      * La fonction write va écrire un élément dans le fichier .xlsx
      * @param elementIG l'éléments à écrire
      */
-    public void write(ElementIG elementIG){
-        elementIGS.add(elementIG);
+    public void write(ElementIG elementIG) {
         XSSFRow row;
-        row = sheet.createRow(lastRowIdLevel(getActualLevelName()));
-        System.out.println("element : " + elementIG.getNameElement() +" "+ elementIG.getUnitElement() +" "+ elementIG.getvalueElement());
         int cellid = 0;
-        Cell cellName = row.createCell(cellid);
-        cellName.setCellValue(elementIG.getNameElement());
-        cellid++;
-        Cell cellUnit = row.createCell(cellid);
-        cellUnit.setCellValue(elementIG.getUnitElement());
-        Cell cellValue = row.createCell(getLevel(actualLevel).getCellid());
-        cellValue.setCellValue(elementIG.getvalueElement());
+        //Si un élément du même nom existe déjà :
+        if (alreadyExist(elementIG)) {
+            ElementIG fatherElement = getElement(elementIG.getNameElement());
+            fatherElement.addObject(elementIG.getvalueElement(2));
+            fatherElement.addObject(getActualLevelName());
+            System.out.println(fatherElement.obj());
+            //on décrement la dernière ligne du niveau de FatherElement
+            row = sheet.createRow(fatherElement.getRowid());
+
+            Cell cellName = row.createCell(cellid);
+            cellName.setCellValue(fatherElement.getNameElement());
+            cellid++;
+            Cell cellUnit = row.createCell(cellid);
+            cellUnit.setCellValue(fatherElement.getUnitElement());
+
+
+            for (int i = 0; i < fatherElement.numberOfObjects() ; i+=2) {
+                Cell cell = row.createCell(getLevel(fatherElement.getStringValueElement(i+3)).getCellid());
+                cell.setCellValue(fatherElement.getvalueElement(i+2));
+            }
+
+        } else {
+            //Si aucun élément similaire en mémoire
+            elementIGS.add(elementIG);
+            row = sheet.createRow(elementIG.getRowid());
+            System.out.println(elementIG.obj());
+            Cell cellName = row.createCell(cellid);
+            cellName.setCellValue(elementIG.getNameElement());
+            cellid++;
+            Cell cellUnit = row.createCell(cellid);
+            cellUnit.setCellValue(elementIG.getUnitElement());
+            Cell cellValue = row.createCell(getLevel(actualLevel).getCellid());
+            cellValue.setCellValue(elementIG.getvalueElement(2));
+            getLevel(elementIG.getNameLevel()).setRowid(getLevel(elementIG.getNameLevel()).getRowid() +1);
+        }
         try {
             FileOutputStream out = new FileOutputStream(fileCalc);
             workbook.write(out);
@@ -387,6 +445,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
                 if(!result.get().isEmpty()) {
                     NiveauIG niveauIG = new NiveauIG(textInputDialog.getResult(), FabricRowsIdAndCellId.getInstance().getcellidLevel());
                     niveauIGS.add(niveauIG);
+                    notifierObservateur();
                     //écrire le level dans le xlsx une fois ajouter
                     writeLevel();
                 }
@@ -400,7 +459,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
     /**
      * La fonction rajoute/écrit un nouveau niveau dans e ficier .xlsx
      */
-    public void writeLevel() {
+    private void writeLevel() {
         XSSFRow row;
         row = sheet.createRow(2);
         for (NiveauIG obj : niveauIGS) {
@@ -510,7 +569,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
      * @param index l'index
      * @return le premier nombre qui suit l'index, sinon -1 si erreur
      */
-    public int searchFirstNumberFrom(ArrayList<String> text, int index) {
+    private int searchFirstNumberFrom(ArrayList<String> text, int index) {
         for (int i = index; i < text.size(); i++) {
             if (estUnEntier(text.get(i)))
                 return i;
@@ -563,13 +622,13 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
      * @return element
      */
     public ElementIG createKnownElement(ArrayList<String> suggest, String userWord) {
-        int rowidLastElement = getLevel(actualLevel).getRowid();
-        Object[] obj = new Object[3];
+        Object[] obj = new Object[4];
         obj[0] = userWord;
         obj[1] = suggest.get(0);
         obj[2] = suggest.get(1);
+        obj[3] = getActualLevelName();
         ElementIG elementIG;
-        elementIG = new ElementIG(rowidLastElement, obj, getLevel(getActualLevelName()));
+        elementIG = new ElementIG(obj, getLevel(getActualLevelName()));
         return elementIG;
     }
 

@@ -29,7 +29,7 @@ public class Main extends Application {
         root.setCenter(loaderTwix.load());
         root.setTop(loaderMenu.load());
         primaryStage.setTitle("SmartIJ");
-        primaryStage.setScene(new Scene(root,500,500));
+        primaryStage.setScene(new Scene(root,700,700));
         primaryStage.show();
     }
 

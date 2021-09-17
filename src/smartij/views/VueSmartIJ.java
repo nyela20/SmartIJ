@@ -22,9 +22,14 @@ public class VueSmartIJ implements PatternObserver {
     @FXML
     private Button buttonSearch;
     @FXML
+    private Button buttonAddLevel;
+    @FXML
+    private Button buttonChangeLevel;
+    @FXML
     private VBox ElementIGS;
     @FXML
     private Label unitIGS;
+
 
     private final SmartIG smartIG;
     private final BorderPane pane;
@@ -43,13 +48,27 @@ public class VueSmartIJ implements PatternObserver {
         }
     }
 
+
+
     public void printElement(){
         ArrayList<Node> n = new ArrayList<>();
         n.addAll(ElementIGS.getChildren());
         ElementIGS.getChildren().removeAll(n);
         for(ElementIG e : smartIG){
-            ElementIGS.getChildren().add(new Label(e.getNameElement() + " -  " + e.getvalueElement() + " - " + e.getUnitElement()));
+            ElementIGS.getChildren().add(new Label(e.obj().toString()));
         }
+    }
+
+    public void open() {
+        smartIG.open();
+    }
+
+    public void changeLevel() {
+        smartIG.changeLevel();
+    }
+
+    public void addLevel() {
+        smartIG.addLevel();
     }
 
     public void printUnit(){
@@ -63,8 +82,13 @@ public class VueSmartIJ implements PatternObserver {
         filename.setText("Vous avez choisi le fichier : " + smartIG.getFileName());
         if (smartIG.getActualLevelName() != null)
             levelname.setText("Level actuel : " + smartIG.getActualLevelName());
-        if (smartIG.getState() == 1)
-            buttonSearch.setVisible(true);
+        if (smartIG.getState() == 1) {
+            buttonAddLevel.setVisible(true);
+            if(smartIG.getnumberOfLevel() > 0){
+                buttonChangeLevel.setVisible(true);
+                buttonSearch.setVisible(true);
+            }
+        }
         printElement();
         printUnit();
 

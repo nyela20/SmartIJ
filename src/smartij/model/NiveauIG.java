@@ -8,7 +8,7 @@ public class NiveauIG {
     public NiveauIG(String levelname, int cellid) {
         this.levelname = levelname;
         this.cellid = cellid;
-        this.rowid = 3;
+        this.rowid = 4;
     }
 
     public int getCellid() {
