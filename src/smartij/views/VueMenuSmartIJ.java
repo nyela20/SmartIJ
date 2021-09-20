@@ -1,6 +1,7 @@
 package smartij.views;
 
 
+import smartij.exceptions.ExceptionSmartIJ;
 import smartij.model.SmartIG;
 
 
@@ -23,7 +24,11 @@ public class VueMenuSmartIJ implements PatternObserver {
     }
 
     public void addUnit() {
-        smartIG.addUnit();
+        try {
+            smartIG.addUnit();
+        } catch (ExceptionSmartIJ e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -38,11 +43,19 @@ public class VueMenuSmartIJ implements PatternObserver {
     }
 
     public void changeLevel() {
-        smartIG.changeLevel();
+        try {
+            smartIG.changeLevel();
+        } catch (ExceptionSmartIJ e) {
+            e.printStackTrace();
+        }
     }
 
     public void addLevel() {
-        smartIG.addLevel();
+        try {
+            smartIG.addLevel();
+        } catch (ExceptionSmartIJ e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -1,13 +1,10 @@
 package smartij.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class ElementIG {
     private final int rowid;
-    private final int cellid;
     private final ArrayList<Object> objectsIGS = new ArrayList<>();
     private final String name;
     private final String nameLevel;
@@ -15,7 +12,6 @@ public class ElementIG {
 
     public ElementIG(Object[] objects, NiveauIG niveauIG) {
         this.rowid = niveauIG.getRowid();
-        this.cellid = niveauIG.getCellid();
         this.nameLevel = niveauIG.getLevelname();
         Collections.addAll(objectsIGS, objects);
         this.name = objects[0].toString();
@@ -48,11 +44,6 @@ public class ElementIG {
     public String getStringValueElement(int i){
         return objectsIGS.get(i).toString();
     }
-
-    public int getCellid() {
-        return cellid;
-    }
-
 
     public ArrayList<Object> obj(){
         return objectsIGS;

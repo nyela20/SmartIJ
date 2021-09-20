@@ -20,7 +20,7 @@
                            </color>
                         </InnerShadow>
                      </effect></Button>
-                  <Button fx:id="buttonSearch" maxWidth="200.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="30.0" style="-fx-background-color: red; -fx-border-color: white;" text="Ajouter C" underline="true" visible="false">
+                  <Button fx:id="buttonAddCat" maxWidth="200.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="30.0" style="-fx-background-color: red; -fx-border-color: white;" text="Ajouter C" underline="true" visible="false">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

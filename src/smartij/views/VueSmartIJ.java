@@ -2,21 +2,16 @@ package smartij.views;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import smartij.exceptions.ExceptionSmartIJ;
 import smartij.listenerDnd.ListenerDrop;
 import smartij.listenerDnd.ListenerSetDrag;
 import smartij.model.CategoryIG;
-import smartij.model.ElementIG;
 import smartij.model.SmartIG;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class VueSmartIJ implements PatternObserver {
 
@@ -25,15 +20,11 @@ public class VueSmartIJ implements PatternObserver {
     @FXML
     private Label levelname;
     @FXML
-    private Button buttonSearch;
+    private Button buttonAddCat;
     @FXML
     private Button buttonAddLevel;
     @FXML
     private Button buttonChangeLevel;
-    @FXML
-    private VBox ElementIGS;
-    @FXML
-    private Label unitIGS;
     @FXML
     private Pane postitPane;
 
@@ -49,29 +40,13 @@ public class VueSmartIJ implements PatternObserver {
         pane.setOnDragDropped(new ListenerDrop(smartIG));
     }
 
-    public void search() {
+
+    public void addCategory() {
         try {
-            smartIG.search();
-        } catch (Exception e) {
-            e.printStackTrace();
+            smartIG.addCategory();
+        } catch (ExceptionSmartIJ e) {
+            System.err.println(e.getMessage());
         }
-    }
-
-    public void addCategory(){
-        smartIG.addCategory();
-    }
-
-
-
-    public void printElement(){
-        /*
-        ArrayList<Node> n = new ArrayList<>();
-        n.addAll(ElementIGS.getChildren());
-        ElementIGS.getChildren().removeAll(n);
-        for(ElementIG e : smartIG){
-            ElementIGS.getChildren().add(new Label(e.obj().toString()));
-        }
-         */
     }
 
     public void open() {
@@ -79,40 +54,49 @@ public class VueSmartIJ implements PatternObserver {
     }
 
     public void changeLevel() {
-        smartIG.changeLevel();
+        try {
+            smartIG.changeLevel();
+        } catch (ExceptionSmartIJ e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     public void addLevel() {
-        smartIG.addLevel();
+        try {
+            smartIG.addLevel();
+        } catch (ExceptionSmartIJ e) {
+            System.err.println(e.getMessage());
+        }
     }
 
 
-
     @Override
-    public void reagir() throws IOException {
+    public void reagir() throws IOException, ExceptionSmartIJ {
         postitPane.getChildren().clear();
 
         //rafraîchir
         filename.setText("Vous avez choisi le fichier : " + smartIG.getFileName());
         if (smartIG.getActualLevelName() != null)
-            levelname.setText("Level actuel : " + smartIG.getActualLevelName());
+            levelname.setText("Niveau actuel : " + smartIG.getActualLevelName());
+
+        //Le bouton ajouter Niveau
+        buttonAddLevel.setVisible(false);
+        buttonChangeLevel.setVisible(false);
+        buttonAddCat.setVisible(false);
+
         if (smartIG.getState() == 1) {
             buttonAddLevel.setVisible(true);
-            if(smartIG.getnumberOfLevel() > 0){
+            if (smartIG.getnumberOfLevel() > 0) {
                 buttonChangeLevel.setVisible(true);
-                buttonSearch.setVisible(true);
+                if (smartIG.getActualLevelName() != null && !smartIG.getActualLevelName().isEmpty())
+                    buttonAddCat.setVisible(true);
+                for (CategoryIG categoryIG : smartIG) {
+                    postitPane.getChildren().add(new VuePostit(categoryIG.getNameCategory(), categoryIG, smartIG));
+                }
             }
         }
 
-        for(CategoryIG categoryIG : smartIG){
-            //à modifier
-            postitPane.getChildren().add(new VuePostit(categoryIG.getNameCategory(), categoryIG,smartIG));
-        }
 
-        /*
-        printElement();
-        printUnit();
-         */
 
         /*Menu*/
         FXMLLoader loaderMenu = new FXMLLoader();
@@ -120,6 +104,5 @@ public class VueSmartIJ implements PatternObserver {
         loaderMenu.setControllerFactory(iC -> new VueMenuSmartIJ(smartIG));
         pane.setTop(loaderMenu.load());
     }
-
 
 }

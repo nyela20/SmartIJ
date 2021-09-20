@@ -1,5 +1,6 @@
 package smartij.model;
 
+import smartij.exceptions.ExceptionSmartIJ;
 import smartij.views.PatternObserver;
 
 import java.io.IOException;
@@ -13,12 +14,10 @@ public abstract class PatternObervable {
 
     /**
      * ajoute un PatternObserver
-     *
      * @param patternObserver la patternObserver
      */
     public void ajouter(PatternObserver patternObserver) {
         observateurPatternObserver.add(patternObserver);
-        //patternObserver.reagir();
     }
 
     /**
@@ -28,7 +27,7 @@ public abstract class PatternObervable {
         for (PatternObserver patternObserver : observateurPatternObserver) {
             try {
                 patternObserver.reagir();
-            } catch (IOException e) {
+            } catch (IOException | ExceptionSmartIJ e) {
                 e.printStackTrace();
             }
         }

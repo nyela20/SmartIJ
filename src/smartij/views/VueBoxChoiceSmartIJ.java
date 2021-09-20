@@ -2,9 +2,9 @@ package smartij.views;
 
 
 import javafx.scene.control.ChoiceDialog;
+import smartij.exceptions.ExceptionSmartIJ;
 import smartij.model.ElementIG;
 import smartij.model.SmartIG;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,16 +22,20 @@ public class VueBoxChoiceSmartIJ extends ChoiceDialog {
         add(suggestion);
         Optional<String> result = showAndWait();
         result.ifPresent(name -> {
-            traiter(getResult().toString());
+            try {
+                traiter(getResult().toString());
+            } catch (ExceptionSmartIJ e) {
+                e.printStackTrace();
+            }
         });
     }
 
-    public void traiter(String choice) {
+    public void traiter(String choice) throws ExceptionSmartIJ {
         ArrayList<String> suggest = new ArrayList<>(List.of(choice.split(" ")));
         write(createKnownElement(suggest));
     }
 
-    private ElementIG createKnownElement(ArrayList<String> suggest) {
+    private ElementIG createKnownElement(ArrayList<String> suggest) throws ExceptionSmartIJ {
         return smartIG.createKnownElement(suggest, userWord);
     }
 
@@ -40,7 +44,7 @@ public class VueBoxChoiceSmartIJ extends ChoiceDialog {
      *
      * @param elementIG l'élèment
      */
-    public void write(ElementIG elementIG) {
+    public void write(ElementIG elementIG) throws ExceptionSmartIJ {
         smartIG.write(elementIG);
     }
 

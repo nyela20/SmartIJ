@@ -3,6 +3,7 @@ package smartij.listenerDnd;
 import javafx.event.EventHandler;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import smartij.exceptions.ExceptionSmartIJ;
 import smartij.model.CategoryIG;
 import smartij.model.SmartIG;
 
@@ -20,16 +21,20 @@ public class ListenerDrop implements EventHandler<DragEvent> {
 
     @Override
     public void handle(DragEvent event) {
-        Dragboard dragboard = event.getDragboard();
-        CategoryIG categoryIG = null;
         try {
-            categoryIG = smartIG.getCategory(dragboard.getString());
-        } catch (Exception e) {
-            e.printStackTrace();
+            Dragboard dragboard = event.getDragboard();
+            CategoryIG categoryIG = null;
+            try {
+                categoryIG = smartIG.getCategory(dragboard.getString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            assert categoryIG != null;
+            smartIG.moveCategory(categoryIG, event.getSceneX() - categoryIG.getWidth() / 2, event.getSceneY() - categoryIG.getHeight() / 2);
+            event.setDropCompleted(true);
+            event.consume();
+        }catch (ExceptionSmartIJ exceptionSmartIJ){
+            exceptionSmartIJ.printStackTrace();
         }
-        assert categoryIG != null;
-        smartIG.moveCategory(categoryIG,event.getSceneX() - categoryIG.getWidth() / 2,event.getSceneY() -  categoryIG.getHeight() / 2);
-        event.setDropCompleted(true);
-        event.consume();
     }
 }

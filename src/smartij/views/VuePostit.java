@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import smartij.exceptions.ExceptionSmartIJ;
 import smartij.listenerDnd.ListenerStartDrag;
 import smartij.model.CategoryIG;
 import smartij.model.ElementIG;
@@ -20,28 +21,32 @@ import static jdk.nashorn.internal.objects.Global.Infinity;
 
 public class VuePostit extends BorderPane implements PatternObserver {
 
-    private double prefHeight;
-    private double prefWidth;
+    private final double prefHeight;
+    private final double prefWidth;
     private final String namePostit;
     private final CategoryIG categoryIG;
     private final Label label = new Label();
     private final Button button = new Button("+");
     private final VBox vbox = new VBox();
-    private final SmartIG smartIG;
 
 
     public VuePostit(String namePostit, CategoryIG categoryIG, SmartIG smartIG) {
         this.namePostit = namePostit;
-        this.smartIG = smartIG;
         this.prefHeight = categoryIG.getHeight();
         this.prefWidth = categoryIG.getWidth();
         this.categoryIG = categoryIG;
+        this.autosize();
+        setMinHeight(300);
         init();
         button.setOnMousePressed(v -> {
-            smartIG.setActualCategory(this.namePostit);
-            smartIG.search();
+            try {
+                smartIG.setCategory(this.namePostit);
+                smartIG.search();
+            } catch (ExceptionSmartIJ e) {
+                System.err.println(e.getMessage());
+            }
         });
-        this.setOnDragDetected(new ListenerStartDrag(this,String.valueOf(categoryIG.getNameCategory())));
+        this.setOnDragDetected(new ListenerStartDrag(this, String.valueOf(categoryIG.getNameCategory())));
     }
 
     private void addElementOnVbox(){
@@ -53,7 +58,8 @@ public class VuePostit extends BorderPane implements PatternObserver {
     private void init(){
         this.setLayoutX(categoryIG.getPosx()); this.setLayoutY(categoryIG.getPosy()); initLabel();initButton();initVbox();
         setMaxHeight(-Infinity);setMaxWidth(-Infinity); setMinHeight(-Infinity);setMinWidth(-Infinity);
-        setPrefHeight(prefHeight);setPrefWidth(prefWidth); setTop(label);setBottom(button);setCenter(vbox);
+        //setPrefHeight(prefHeight);setPrefWidth(prefWidth);
+        setTop(label);setBottom(button);setCenter(vbox);
     }
 
     private void initVbox(){
@@ -70,7 +76,7 @@ public class VuePostit extends BorderPane implements PatternObserver {
 
     private void initLabel(){
         label.setText(categoryIG.getNameCategory());label.setId("LabelPostit");
-        label.setPrefHeight(16.0);label.setMaxWidth(prefWidth);
+        label.setPrefHeight(16.0);label.setPrefWidth(prefWidth);
         label.setScaleShape(false);label.setStyle("fx-background-color: yellow;");
         label.setUnderline(true);label.setFont(Font.font("Serif Bold", FontWeight.BOLD, FontPosture.REGULAR,12));
         label.setAlignment(Pos.CENTER);
