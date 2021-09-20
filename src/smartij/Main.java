@@ -12,6 +12,11 @@ import smartij.model.SmartIG;
 import java.io.IOException;
 
 public class Main extends Application {
+
+    int LargeurPanneauPrincipale = 1000;
+    int HauteurPanneauPrincipale = 1000;
+
+
     @Override
     public void start(Stage primaryStage) throws IOException {
         SmartIG smartIG = new SmartIG();
@@ -29,7 +34,9 @@ public class Main extends Application {
         root.setCenter(loaderTwix.load());
         root.setTop(loaderMenu.load());
         primaryStage.setTitle("SmartIJ");
-        primaryStage.setScene(new Scene(root,700,700));
+        Scene scene = new Scene(root, LargeurPanneauPrincipale, HauteurPanneauPrincipale);
+        scene.getStylesheets().add("smartij/sources/css/stylesheet.css");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

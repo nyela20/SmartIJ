@@ -6,12 +6,17 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import smartij.listenerDnd.ListenerDrop;
+import smartij.listenerDnd.ListenerSetDrag;
+import smartij.model.CategoryIG;
 import smartij.model.ElementIG;
 import smartij.model.SmartIG;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class VueSmartIJ implements PatternObserver {
 
@@ -29,6 +34,8 @@ public class VueSmartIJ implements PatternObserver {
     private VBox ElementIGS;
     @FXML
     private Label unitIGS;
+    @FXML
+    private Pane postitPane;
 
 
     private final SmartIG smartIG;
@@ -38,6 +45,8 @@ public class VueSmartIJ implements PatternObserver {
         this.smartIG = smartIG;
         this.smartIG.ajouter(this);
         this.pane = pane;
+        pane.setOnDragOver(new ListenerSetDrag());
+        pane.setOnDragDropped(new ListenerDrop(smartIG));
     }
 
     public void search() {
@@ -48,15 +57,21 @@ public class VueSmartIJ implements PatternObserver {
         }
     }
 
+    public void addCategory(){
+        smartIG.addCategory();
+    }
+
 
 
     public void printElement(){
+        /*
         ArrayList<Node> n = new ArrayList<>();
         n.addAll(ElementIGS.getChildren());
         ElementIGS.getChildren().removeAll(n);
         for(ElementIG e : smartIG){
             ElementIGS.getChildren().add(new Label(e.obj().toString()));
         }
+         */
     }
 
     public void open() {
@@ -71,14 +86,13 @@ public class VueSmartIJ implements PatternObserver {
         smartIG.addLevel();
     }
 
-    public void printUnit(){
-        unitIGS.setText("Tableau unités : " + smartIG.getAllUnit());
-    }
+
 
     @Override
     public void reagir() throws IOException {
-        //rafraîchir
+        postitPane.getChildren().clear();
 
+        //rafraîchir
         filename.setText("Vous avez choisi le fichier : " + smartIG.getFileName());
         if (smartIG.getActualLevelName() != null)
             levelname.setText("Level actuel : " + smartIG.getActualLevelName());
@@ -89,8 +103,16 @@ public class VueSmartIJ implements PatternObserver {
                 buttonSearch.setVisible(true);
             }
         }
+
+        for(CategoryIG categoryIG : smartIG){
+            //à modifier
+            postitPane.getChildren().add(new VuePostit(categoryIG.getNameCategory(), categoryIG,smartIG));
+        }
+
+        /*
         printElement();
         printUnit();
+         */
 
         /*Menu*/
         FXMLLoader loaderMenu = new FXMLLoader();

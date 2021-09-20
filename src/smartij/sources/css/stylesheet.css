@@ -1,0 +1,15 @@
+/**-----STYLE-BOUTONS-----*/
+
+
+#buttonPostit {
+   -fx-background-color: black;
+   -fx-text-fill: white;
+}
+
+#vboxPostit {
+   -fx-background-color: yellow;
+}
+
+#LabelPostit {
+   -fx-background-color: yellow;
+}

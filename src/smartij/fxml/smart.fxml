@@ -7,9 +7,6 @@
 <?import javafx.scene.text.*?>
 
 <BorderPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueSmartIJ">
-   <center>
-      <VBox fx:id="ElementIGS" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
-   </center>
    <bottom>
       <HBox prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -23,7 +20,7 @@
                            </color>
                         </InnerShadow>
                      </effect></Button>
-                  <Button fx:id="buttonSearch" maxWidth="200.0" mnemonicParsing="false" onAction="#search" prefHeight="30.0" style="-fx-background-color: red; -fx-border-color: white;" text="Search" underline="true" visible="false">
+                  <Button fx:id="buttonSearch" maxWidth="200.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="30.0" style="-fx-background-color: red; -fx-border-color: white;" text="Ajouter C" underline="true" visible="false">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -46,4 +43,10 @@
          </children>
       </HBox>
    </bottom>
+   <left>
+      <VBox fx:id="ElementIGS" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+   </left>
+   <center>
+      <Pane fx:id="postitPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>

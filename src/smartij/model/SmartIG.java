@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import smartij.exceptions.BoxDialogExceptionSmartIJ;
 import smartij.exceptions.ExceptionSmartIJ;
+import smartij.fabrics.FabricIdPostit;
 import smartij.fabrics.FabricRowsIdAndCellId;
 import smartij.views.VueBoxChoiceSmartIJ;
 import smartij.views.VueBoxDialogSmartIJ;
@@ -20,17 +21,18 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
+public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
 
 
     private File file;
     private File fileCalc;
     private int state;
     private String actualLevel;
+    private String actualCategory;
     private final ArrayList<String> unitIGS = new ArrayList<>();
     private final ArrayList<NiveauIG> niveauIGS = new ArrayList<>();
     private final ArrayList<ElementIG> elementIGS = new ArrayList<>();
-    private final ArrayList<CategorieIG> categorieIGS = new ArrayList<>();
+    private final ArrayList<CategoryIG> categoryIGS = new ArrayList<>();
     private final XSSFWorkbook workbook = new XSSFWorkbook();
     private final XSSFSheet sheet = workbook.createSheet();
 
@@ -51,6 +53,27 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
     }
 
     /**
+     * change le nom de la catégorie actuelle
+     * @param newcat la nouvelle catégorie
+     */
+    public void setActualCategory(String newcat){
+        this.actualCategory = newcat;
+    }
+
+    /*
+    retourne une catégorie dont le nom est donnée en paramètre
+     */
+    public CategoryIG getCategory(String namecat){
+        for(CategoryIG c : categoryIGS){
+            if(c.getNameCategory().equals(namecat)){
+                return c;
+            }
+        }
+        return null;
+    }
+
+
+    /**
      * le nombre de niveau
      *
      * @return le nombre de niveau
@@ -67,6 +90,23 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
     public String getActualLevelName() {
         return actualLevel;
     }
+
+
+
+    /**
+     * retourne une catégorie
+     * @param name la nom de la catégorie
+     * @return une catégorie
+     */
+    public CategoryIG getCatergorie(String name){
+        for(CategoryIG categoryIG : categoryIGS){
+            if(categoryIG.getNameCategory().equals(name))
+                return categoryIG;
+        }
+        return null;
+    }
+
+
 
     /**
      * retourne un niveau
@@ -88,13 +128,15 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
      * @return un Element
      */
     private ElementIG getElement(String name){
-        for(ElementIG elementIG : this){
+        for(ElementIG elementIG : elementIGS){
             if (Objects.equals(name, elementIG.getNameElement())) {
                 return elementIG;
             }
         }
         return null;
     }
+
+
 
 
     /**
@@ -165,7 +207,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
      * @return le nunméro de la dernièreligne
      */
     private int lastRowIdLevel(String nameLevel) {
-        return getLevel(nameLevel).getRowid();
+        return Objects.requireNonNull(getLevel(nameLevel)).getRowid();
     }
 
     /**
@@ -194,6 +236,18 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
     }
 
     /**
+     * la fonction déplace une interface de CategorieIG
+     * @param categoryIG la catégorie
+     * @param posx la position x
+     * @param posy la position y
+     */
+    public void moveCategory(CategoryIG categoryIG, double posx, double posy){
+        getCategory(categoryIG.getNameCategory()).move(posx,posy);
+        notifierObservateur();
+        System.out.println("nous avons" + categoryIGS.size());
+    }
+
+    /**
      * La fonction vérifie que deux mots sont pareil
      */
     private static boolean equals(String a, String b) {
@@ -205,6 +259,9 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
         }
         return true;
     }
+
+
+
 
     /**
      * Ouverture du fichier de l'utilisateur
@@ -273,7 +330,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
         //Si un élément du même nom existe déjà :
         if (alreadyExist(elementIG)) {
             ElementIG fatherElement = getElement(elementIG.getNameElement());
-            fatherElement.addObject(elementIG.getvalueElement(2));
+            Objects.requireNonNull(fatherElement).addObject(elementIG.getvalueElement(2));
             fatherElement.addObject(getActualLevelName());
             System.out.println(fatherElement.obj());
             //on décrement la dernière ligne du niveau de FatherElement
@@ -287,7 +344,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
 
 
             for (int i = 0; i < fatherElement.numberOfObjects() ; i+=2) {
-                Cell cell = row.createCell(getLevel(fatherElement.getStringValueElement(i+3)).getCellid());
+                Cell cell = row.createCell(Objects.requireNonNull(getLevel(fatherElement.getStringValueElement(i + 3))).getCellid());
                 cell.setCellValue(fatherElement.getvalueElement(i+2));
             }
 
@@ -301,9 +358,9 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
             cellid++;
             Cell cellUnit = row.createCell(cellid);
             cellUnit.setCellValue(elementIG.getUnitElement());
-            Cell cellValue = row.createCell(getLevel(actualLevel).getCellid());
+            Cell cellValue = row.createCell(Objects.requireNonNull(getLevel(actualLevel)).getCellid());
             cellValue.setCellValue(elementIG.getvalueElement(2));
-            getLevel(elementIG.getNameLevel()).setRowid(getLevel(elementIG.getNameLevel()).getRowid() +1);
+            Objects.requireNonNull(getLevel(elementIG.getNameLevel())).setRowid(Objects.requireNonNull(getLevel(elementIG.getNameLevel())).getRowid() +1);
         }
         try {
             FileOutputStream out = new FileOutputStream(fileCalc);
@@ -313,6 +370,7 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        notifierObservateur();
     }
 
 
@@ -433,17 +491,36 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
         }
     }
 
+    /**
+     * ajouter une catégorie
+     */
+    public void addCategory() {
+        if (fileExist()) {
+            VueBoxDialogSmartIJ vueBoxDialogSmartIJ = new VueBoxDialogSmartIJ("Nouvelle catégorie","Ajouter une catégorie","ajouter");
+            Optional<String> result = Optional.ofNullable(vueBoxDialogSmartIJ.getResult());
+            result.ifPresent(name -> {
+                if(!result.get().isEmpty()) {
+                    int identifiant = FabricIdPostit.getInstance().getIdPostit();
+                    categoryIGS.add(new CategoryIG(result.get(),identifiant,100,100));
+                    notifierObservateur();
+                }
+            });
+            notifierObservateur();
+        }else{
+            new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Vous n'avez pas ouvert de fichier").getMessage());
+        }
+    }
+
+
+
 
     public void addLevel() {
         if (fileExist()) {
-            TextInputDialog textInputDialog = new TextInputDialog();
-            textInputDialog.setContentText("Ajouter un level");
-            textInputDialog.setHeaderText("Nouveau level");
-            textInputDialog.setTitle("Ajouter");
-            Optional<String> result = textInputDialog.showAndWait();
+            VueBoxDialogSmartIJ vueBoxDialogSmartIJ = new VueBoxDialogSmartIJ("Nouveau Niveau","Ajouter un niveau","Ajouter");
+            Optional<String> result = Optional.ofNullable(vueBoxDialogSmartIJ.getResult());
             result.ifPresent(name -> {
                 if(!result.get().isEmpty()) {
-                    NiveauIG niveauIG = new NiveauIG(textInputDialog.getResult(), FabricRowsIdAndCellId.getInstance().getcellidLevel());
+                    NiveauIG niveauIG = new NiveauIG(vueBoxDialogSmartIJ.getResult(), FabricRowsIdAndCellId.getInstance().getcellidLevel());
                     niveauIGS.add(niveauIG);
                     notifierObservateur();
                     //écrire le level dans le xlsx une fois ajouter
@@ -628,13 +705,15 @@ public class SmartIG extends PatternObervable implements Iterable<ElementIG> {
         obj[2] = suggest.get(1);
         obj[3] = getActualLevelName();
         ElementIG elementIG;
-        elementIG = new ElementIG(obj, getLevel(getActualLevelName()));
+        elementIG = new ElementIG(obj, Objects.requireNonNull(getLevel(getActualLevelName())));
+        getCatergorie(actualCategory).addElement(elementIG);
         return elementIG;
     }
 
+
     @Override
-    public Iterator<ElementIG> iterator() {
-        return elementIGS.iterator();
+    public Iterator<CategoryIG> iterator() {
+        return categoryIGS.iterator();
     }
 }
 
