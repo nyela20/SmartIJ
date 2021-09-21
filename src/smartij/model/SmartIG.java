@@ -156,9 +156,40 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
     private boolean alreadyExist(ElementIG elementIG) {
         for (CategoryIG categoryIG : this) {
             for (ElementIG elementIG1 : categoryIG) {
-                if (Objects.equals(elementIG1.getNameElement(), elementIG.getNameElement())) {
+                if (elementIG1.getNameElement().equals(elementIG.getNameElement())) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * la fonction sert à verifier si un niveau similaire existe déjà
+     * en mémoire
+     *
+     * @param niveauIG l'élèment à vérifier
+     * @return vrai sinon faux
+     */
+    private boolean alreadyExist(NiveauIG niveauIG){
+        for (NiveauIG niveauIG1 : niveauIGS) {
+                if (niveauIG1.getLevelname().equals(niveauIG.getLevelname())) {
+                    return true;
+                }
+            }
+        return false;
+    }
+
+    /**
+     * la fonction verifie si une categorie
+     * comme celui en paramètre existe déjà
+     * @param categoryIG la référence
+     * @return true or false
+     */
+    private boolean alreadyExist(CategoryIG categoryIG){
+        for(CategoryIG categoryIG1 : this){
+            if(categoryIG1.getNameCategory().equals(categoryIG.getNameCategory())){
+                return true;
             }
         }
         return false;
@@ -230,6 +261,26 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         getCategory(categoryIG.getNameCategory()).move(posx, posy);
         notifierObservateur();
         System.out.println("nous avons" + categoryIGS.size());
+    }
+
+    /**
+     * la fonction supprime les catégorie selectionnés
+     */
+    public void removeSelectedCat(){
+        for(CategoryIG categoryIG : this){
+            if(categoryIG.isSelected()){
+
+            }
+        }
+    }
+
+    /**
+     * La fonction change l'Etat (selectionnée ou non) d'une catégorie
+     * @param categoryIG la catégorie
+     */
+    public void changeCatState(CategoryIG categoryIG){
+        categoryIG.changeState();
+        notifierObservateur();
     }
 
     /**
@@ -315,6 +366,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         XSSFRow row;
         //Si un élément du même nom existe déjà :
         if (alreadyExist(elementIG)) {
+            System.out.println(elementIG.getNameElement() + " existe déjà");
             ElementIG fatherElement = getElement(elementIG.getNameElement());
             Objects.requireNonNull(fatherElement).addObject(elementIG.getvalueElement(2));
             fatherElement.addObject(getActualLevelName());
@@ -329,6 +381,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
             //Si aucun élément similaire en mémoire
             getCategory(actualCategory).addElement(elementIG);
             row = sheet.createRow(elementIG.getRowid());
+            System.out.println(elementIG.getNameElement() + " n'existe pas");
             writepre(row, elementIG);
             Cell cellValue = row.createCell(Objects.requireNonNull(getLevel(actualLevel)).getCellid());
             cellValue.setCellValue(elementIG.getvalueElement(2));
@@ -467,8 +520,13 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
             Optional<String> result = Optional.ofNullable(vueBoxDialogSmartIJ.getResult());
             result.ifPresent(name -> {
                 if (!result.get().isEmpty()) {
-                    categoryIGS.add(new CategoryIG(result.get(), 100, 100));
-                    notifierObservateur();
+                    CategoryIG categoryIG = new CategoryIG(result.get(),100,100);
+                    if(!alreadyExist(categoryIG)) {
+                        categoryIGS.add(categoryIG);
+                        notifierObservateur();
+                    }else{
+                        new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Une catégorie de même nom existe déjà").getMessage());
+                    }
                 }
             });
             notifierObservateur();
@@ -484,10 +542,14 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         result.ifPresent(name -> {
             if (!result.get().isEmpty()) {
                 NiveauIG niveauIG = new NiveauIG(vueBoxDialogSmartIJ.getResult(), FabricRowsIdAndCellId.getInstance().getcellidLevel());
-                niveauIGS.add(niveauIG);
-                notifierObservateur();
-                //écrire le level dans le xlsx une fois ajouter
-                writeLevel();
+                if(!alreadyExist(niveauIG)) {
+                    niveauIGS.add(niveauIG);
+                    notifierObservateur();
+                    //écrire le level dans le xlsx une fois ajouter
+                    writeLevel();
+                }else{
+                    new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Un niveau du même nom existe déjà").getMessage());
+                }
             }
         });
     }
@@ -656,7 +718,6 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         obj[3] = getActualLevelName();
         ElementIG elementIG;
         elementIG = new ElementIG(obj, Objects.requireNonNull(getLevel(getActualLevelName())));
-        getCategory(actualCategory).addElement(elementIG);
         return elementIG;
     }
 

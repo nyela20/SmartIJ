@@ -31,6 +31,10 @@ public class VueMenuSmartIJ implements PatternObserver {
         }
     }
 
+    public void removeSelectedCat(){
+        smartIG.removeSelectedCat();
+    }
+
     /**
      * close application
      */

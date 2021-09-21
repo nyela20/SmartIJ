@@ -3,6 +3,7 @@ package smartij.views;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -15,8 +16,10 @@ import smartij.model.ElementIG;
 import smartij.model.SmartIG;
 
 
+import java.util.EventListener;
 
 import static jdk.nashorn.internal.objects.Global.Infinity;
+import static jdk.nashorn.internal.objects.Global.objectPrototype;
 
 
 public class VuePostit extends BorderPane implements PatternObserver {
@@ -31,12 +34,16 @@ public class VuePostit extends BorderPane implements PatternObserver {
 
 
     public VuePostit(String namePostit, CategoryIG categoryIG, SmartIG smartIG) {
+        if(!categoryIG.isSelected())
+            this.setId("postit_Not_Selected");
+        else
+            this.setId("postit_Selected");
+
+
         this.namePostit = namePostit;
         this.prefHeight = categoryIG.getHeight();
         this.prefWidth = categoryIG.getWidth();
         this.categoryIG = categoryIG;
-        this.autosize();
-        setMinHeight(300);
         init();
         button.setOnMousePressed(v -> {
             try {
@@ -47,37 +54,39 @@ public class VuePostit extends BorderPane implements PatternObserver {
             }
         });
         this.setOnDragDetected(new ListenerStartDrag(this, String.valueOf(categoryIG.getNameCategory())));
+        this.setOnMouseClicked((v) -> {smartIG.changeCatState(categoryIG);
+        });
     }
 
     private void addElementOnVbox(){
+        vbox.getChildren().clear();
         for(ElementIG elementIG : categoryIG) {
             vbox.getChildren().add(new Label(elementIG.obj().toString()));
         }
     }
 
     private void init(){
-        this.setLayoutX(categoryIG.getPosx()); this.setLayoutY(categoryIG.getPosy()); initLabel();initButton();initVbox();
-        setMaxHeight(-Infinity);setMaxWidth(-Infinity); setMinHeight(-Infinity);setMinWidth(-Infinity);
-        //setPrefHeight(prefHeight);setPrefWidth(prefWidth);
-        setTop(label);setBottom(button);setCenter(vbox);
+        this.setLayoutX(categoryIG.getPosx()); this.setLayoutY(categoryIG.getPosy()); initVbox();initLabel();initButton();
+        setMaxHeight(-Infinity);setMaxWidth(-Infinity); setMinHeight(prefHeight); setMinWidth(prefWidth);
+        setTop(label); setBottom(button); setCenter(vbox);
     }
 
     private void initVbox(){
         vbox.setId("vboxPostit");vbox.setAlignment(Pos.CENTER);
-        //vbox.setPrefHeight(prefHeight);vbox.setPrefWidth(143);
+        vbox.autosize();
         addElementOnVbox();
     }
 
     private void initButton(){
-        button.setId("buttonPostit");button.setMnemonicParsing(false);button.setPrefHeight(26.0);button.setPrefWidth(prefWidth);
-        button.setStyle("-fx-background-color : black;"); button.setStyle("-fx-text-fill : white;");button.setAlignment(Pos.CENTER);
+        button.setId("buttonPostit");button.setMnemonicParsing(false);button.setPrefHeight(20);button.setPrefWidth(prefWidth);
+        button.setAlignment(Pos.CENTER);
     }
 
 
     private void initLabel(){
         label.setText(categoryIG.getNameCategory());label.setId("LabelPostit");
-        label.setPrefHeight(16.0);label.setPrefWidth(prefWidth);
-        label.setScaleShape(false);label.setStyle("fx-background-color: yellow;");
+        label.setPrefHeight(20);label.setPrefWidth(prefWidth);
+        label.setScaleShape(false);
         label.setUnderline(true);label.setFont(Font.font("Serif Bold", FontWeight.BOLD, FontPosture.REGULAR,12));
         label.setAlignment(Pos.CENTER);
     }

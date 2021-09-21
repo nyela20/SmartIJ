@@ -30,7 +30,7 @@
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../sources/images/menulogo/renommer.png" />
+                        <Image url="@../sources/images/menulogo/plus.png" />
                      </image>
                   </ImageView>
                </graphic></MenuItem>
@@ -38,7 +38,7 @@
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../sources/images/menulogo/renommer.png" />
+                        <Image url="@../sources/images/menulogo/plus.png" />
                      </image>
                   </ImageView>
                </graphic></MenuItem>
@@ -54,11 +54,33 @@
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../sources/images/menulogo/supprimer.png" />
+                        <Image url="@../sources/images/menulogo/effacer.png" />
                      </image>
                   </ImageView>
                </graphic></MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#removeSelectedCat" text="Remove category">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/effacer.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </MenuItem>
             </Menu>
+         <Menu mnemonicParsing="false" text="Tools">
+           <items>
+             <MenuItem mnemonicParsing="false" text="Generate file">
+                  <graphic>
+                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../sources/images/menulogo/ouvrir.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+               </MenuItem>
+           </items>
+         </Menu>
         </MenuBar>
     </top>
 </BorderPane>

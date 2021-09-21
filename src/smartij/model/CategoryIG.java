@@ -9,6 +9,7 @@ public class CategoryIG implements Iterable<ElementIG>{
     private final String name;
     private double posx;
     private double posy;
+    private boolean isSelected = false;
 
     /**
      * Constructeur d'une cat
@@ -21,6 +22,15 @@ public class CategoryIG implements Iterable<ElementIG>{
         this.posx = posx;
         this.posy = posy;
     }
+
+    public void changeState() {
+        isSelected = !isSelected;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
 
     /**
      * retourne le nom de la catégorie
@@ -36,6 +46,7 @@ public class CategoryIG implements Iterable<ElementIG>{
      */
     public void addElement(ElementIG elementIG){
         elementIGS.add(elementIG);
+        System.out.println("ajout : " + elementIGS.size() );
     }
 
     /**
@@ -67,7 +78,7 @@ public class CategoryIG implements Iterable<ElementIG>{
      * @return la largeur
      */
     public double getWidth() {
-        return 300;
+        return 500;
     }
 
     /**

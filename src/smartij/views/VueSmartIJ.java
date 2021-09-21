@@ -90,12 +90,12 @@ public class VueSmartIJ implements PatternObserver {
                 buttonChangeLevel.setVisible(true);
                 if (smartIG.getActualLevelName() != null && !smartIG.getActualLevelName().isEmpty())
                     buttonAddCat.setVisible(true);
+                //dessin des catégorie
                 for (CategoryIG categoryIG : smartIG) {
                     postitPane.getChildren().add(new VuePostit(categoryIG.getNameCategory(), categoryIG, smartIG));
                 }
             }
         }
-
 
 
         /*Menu*/
