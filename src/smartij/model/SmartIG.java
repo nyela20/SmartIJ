@@ -75,6 +75,14 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
     }
 
     /**
+     * retourne le nom de la catégorie actuelle
+     * @return le nom de la catégorie actuelle
+     */
+    public String getActualCategoryName(){
+        return actualCategory;
+    }
+
+    /**
      * la fonction supprime une unité
      *
      * @param unitName la nom de l'unité
@@ -224,6 +232,10 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         return Objects.requireNonNull(getLevel(nameLevel)).getRowid();
     }
 
+    private int lastRowIdCategory(String nameCategory) throws ExceptionSmartIJ{
+        return Objects.requireNonNull(getCategory(nameCategory).getRowid());
+    }
+
     /**
      * La fonction retourne vrai si le String est composé uniquement d'entier
      * de [0 à 9]*, sinon faux
@@ -267,11 +279,14 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
      * la fonction supprime les catégorie selectionnés
      */
     public void removeSelectedCat(){
-        for(CategoryIG categoryIG : this){
+        Iterator<CategoryIG> it = iterator();
+        while (it.hasNext()) {
+            CategoryIG categoryIG = it.next();
             if(categoryIG.isSelected()){
-
+                it.remove();
             }
         }
+        notifierObservateur();
     }
 
     /**
@@ -357,6 +372,9 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
     }
 
 
+
+
+
     /**
      * La fonction write va écrire un élément dans le fichier .xlsx
      *
@@ -379,13 +397,13 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
             }
         } else {
             //Si aucun élément similaire en mémoire
-            getCategory(actualCategory).addElement(elementIG);
             row = sheet.createRow(elementIG.getRowid());
             System.out.println(elementIG.getNameElement() + " n'existe pas");
             writepre(row, elementIG);
             Cell cellValue = row.createCell(Objects.requireNonNull(getLevel(actualLevel)).getCellid());
             cellValue.setCellValue(elementIG.getvalueElement(2));
             Objects.requireNonNull(getLevel(elementIG.getNameLevel())).setRowid(Objects.requireNonNull(getLevel(elementIG.getNameLevel())).getRowid() + 1);
+            Objects.requireNonNull(getCategory(elementIG.getNameCategorie())).setRowid((Objects.requireNonNull(getCategory(elementIG.getNameCategorie())).getRowid() +1));
         }
         try {
             FileOutputStream out = new FileOutputStream(fileCalc);
@@ -478,8 +496,18 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
 
     /**
      * la fonction met à jour le numéro de ligne du fichier
+     * ( Je ne sais plus si cette fonction est encore utile mais bon on la garde !)
      */
     private void updateRows() throws ExceptionSmartIJ {
+        int maxCategory = 0;
+        for(CategoryIG c: categoryIGS){
+            if(lastRowIdCategory(c.getNameCategory()) > maxCategory){
+                maxCategory = lastRowIdCategory(c.getNameCategory());
+            }
+        }
+        for(CategoryIG c : categoryIGS){
+            c.setRowid(maxCategory);
+        }
         int maxLevel = 0;
         for (NiveauIG n : niveauIGS) {
             if (lastRowIdLevel(n.getLevelname()) > maxLevel) {
@@ -588,7 +616,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
                 new VueBoxChoiceSmartIJ(suggestion, this, userWord);
             } else {
                 ArrayList<String> suggest = new ArrayList<>(List.of(suggestion.get(0).split(" ")));
-                write(createKnownElement(suggest,userWord));
+                getCategory(actualCategory).addElement(createKnownElement(suggest,userWord));
             }
         }
     }
@@ -717,7 +745,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         obj[2] = suggest.get(1);
         obj[3] = getActualLevelName();
         ElementIG elementIG;
-        elementIG = new ElementIG(obj, Objects.requireNonNull(getLevel(getActualLevelName())));
+        elementIG = new ElementIG(obj, Objects.requireNonNull(getLevel(getActualLevelName())),Objects.requireNonNull(getCategory(getActualCategoryName())));
         return elementIG;
     }
 

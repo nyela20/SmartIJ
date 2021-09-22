@@ -10,6 +10,7 @@ public class CategoryIG implements Iterable<ElementIG>{
     private double posx;
     private double posy;
     private boolean isSelected = false;
+    private int rowid = 3;
 
     /**
      * Constructeur d'une cat
@@ -25,6 +26,14 @@ public class CategoryIG implements Iterable<ElementIG>{
 
     public void changeState() {
         isSelected = !isSelected;
+    }
+
+    public void setRowid(int rowid) {
+        this.rowid = rowid;
+    }
+
+    public int getRowid() {
+        return rowid;
     }
 
     public boolean isSelected() {
