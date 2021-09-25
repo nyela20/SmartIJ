@@ -397,6 +397,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
     }
 
     private void updateRowForAllLevel() {
+        rowforMax();
         for (NiveauIG niveauIG : niveauIGS) {
             niveauIG.setRowid(niveauIG.getRowid() + 1);
         }
