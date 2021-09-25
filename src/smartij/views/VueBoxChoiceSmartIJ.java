@@ -40,12 +40,12 @@ public class VueBoxChoiceSmartIJ extends ChoiceDialog {
     }
 
     /**
-     * On écrti l'élément dans le fichier xlsx
+     * On écrit l'élément dans le fichier xlsx
      *
      * @param elementIG l'élèment
      */
-    public void write(ElementIG elementIG) throws ExceptionSmartIJ {
-        smartIG.write(elementIG);
+    private void write(ElementIG elementIG) throws ExceptionSmartIJ {
+        //smartIG.write(elementIG);
     }
 
     public void aspect() {

@@ -8,7 +8,7 @@ public class NiveauIG {
     public NiveauIG(String levelname, int cellid) {
         this.levelname = levelname;
         this.cellid = cellid;
-        this.rowid = 4;
+        this.rowid = 3;
     }
 
     public int getCellid() {
@@ -25,5 +25,13 @@ public class NiveauIG {
 
     public void setRowid(int rowid) {
         this.rowid = rowid;
+    }
+
+    public void incrementRowid(){
+        rowid++;
+    }
+
+    public void decrementRowid(){
+        rowid--;
     }
 }

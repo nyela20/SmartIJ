@@ -10,7 +10,7 @@ public class CategoryIG implements Iterable<ElementIG>{
     private double posx;
     private double posy;
     private boolean isSelected = false;
-    private int rowid = 3;
+    private int rowid = 0;
 
     /**
      * Constructeur d'une cat
@@ -55,7 +55,6 @@ public class CategoryIG implements Iterable<ElementIG>{
      */
     public void addElement(ElementIG elementIG){
         elementIGS.add(elementIG);
-        System.out.println("ajout : " + elementIGS.size() );
     }
 
     /**

@@ -9,38 +9,31 @@
 <BorderPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueSmartIJ">
    <bottom>
       <HBox prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox>
-               <children>
-                  <Button alignment="TOP_LEFT" maxWidth="200.0" mnemonicParsing="false" onAction="#open" prefHeight="30.0" style="-fx-background-color: cyan; -fx-border-color: white;" text="Ouvrir fichier">
-                     <effect>
-                        <InnerShadow>
-                           <color>
-                              <Color red="1.0" green="1.0" blue="1.0" />
-                           </color>
-                        </InnerShadow>
-                     </effect></Button>
-                  <Button fx:id="buttonAddCat" maxWidth="200.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="30.0" style="-fx-background-color: red; -fx-border-color: white;" text="Ajouter C" underline="true" visible="false">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-            </VBox>
-            <VBox prefHeight="56.0" prefWidth="143.0">
-               <children>
-                  <Button fx:id="buttonAddLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#addLevel" prefHeight="30.0" style="-fx-background-color: cyan; -fx-border-color: white;" text="Ajouter niveau" visible="false" />
-                  <Button fx:id="buttonChangeLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#changeLevel" prefHeight="30.0" style="-fx-background-color: cyan; -fx-border-color: white;" text="Changer niveau" visible="false" />
-               </children>
-            </VBox>
-              <VBox prefHeight="43.0" prefWidth="268.0" style="-fx-border-color: cyan;">
-                  <children>
-                  <Label fx:id="unitIGS" prefHeight="20.0" prefWidth="300.0" text="Tableau unités : " />
-                      <Label fx:id="levelname" prefHeight="20.0" prefWidth="291.0" text="Niveau actuel : " />
-                  <Label fx:id="filename" prefHeight="20.0" prefWidth="300.0" text="Choisissez un fichier ..." />
-                  </children>
-              </VBox>
-         </children>
+         <VBox>
+            <Button alignment="TOP_LEFT" maxWidth="200.0" mnemonicParsing="false" onAction="#open" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: #808080;" text="Ouvrir fichier">
+               <effect>
+                  <InnerShadow>
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </InnerShadow>
+               </effect>
+            </Button>
+            <Button fx:id="buttonAddCat" maxWidth="200.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="30.0" style="-fx-background-color: #4169E1; -fx-border-color: white;" text="Ajouter C" underline="true" visible="false">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+         </VBox>
+         <VBox prefHeight="56.0" prefWidth="143.0">
+            <Button fx:id="buttonAddLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#addLevel" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: #808080;" text="Ajouter niveau" visible="false" />
+            <Button fx:id="buttonChangeLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#changeLevel" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: white;" text="Changer niveau" visible="false" />
+         </VBox>
+         <VBox prefHeight="43.0" prefWidth="268.0" style="-fx-border-color: black;">
+            <Label fx:id="unitIGS" prefHeight="20.0" prefWidth="300.0" text="Tableau unités : " />
+            <Label fx:id="levelname" prefHeight="20.0" prefWidth="291.0" text="Niveau actuel : " />
+            <Label fx:id="filename" prefHeight="20.0" prefWidth="300.0" text="Choisissez un fichier ..." />
+         </VBox>
       </HBox>
    </bottom>
    <left>
