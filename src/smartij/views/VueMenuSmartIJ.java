@@ -1,6 +1,7 @@
 package smartij.views;
 
 
+import javafx.scene.control.MenuItem;
 import smartij.exceptions.ExceptionSmartIJ;
 import smartij.model.SmartIG;
 
@@ -13,7 +14,6 @@ public class VueMenuSmartIJ implements PatternObserver {
 
     public VueMenuSmartIJ(SmartIG smartIG) {
         this.smartIG = smartIG;
-        //menuquit.setGraphic(new ImageView(new Image("smartij/sources/images/menulogo/supprimer.png")));
     }
 
     /**
@@ -52,7 +52,7 @@ public class VueMenuSmartIJ implements PatternObserver {
     }
 
     public void removeAllUnit(){
-        smartIG.removeAllUnit();
+        smartIG.removeUnit();
     }
 
     public void changeLevel() {

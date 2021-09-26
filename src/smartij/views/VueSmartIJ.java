@@ -20,6 +20,8 @@ public class VueSmartIJ implements PatternObserver {
     @FXML
     private Label levelname;
     @FXML
+    private Label unitIGS;
+    @FXML
     private Button buttonAddCat;
     @FXML
     private Button buttonAddLevel;
@@ -74,10 +76,13 @@ public class VueSmartIJ implements PatternObserver {
     public void reagir() throws IOException, ExceptionSmartIJ {
         postitPane.getChildren().clear();
 
+
         //rafraîchir
-        filename.setText("Vous avez choisi le fichier : " + smartIG.getFileName());
+        filename.setText("You have chosen the file : " + smartIG.getFileName());
         if (smartIG.getActualLevelName() != null)
-            levelname.setText("Niveau actuel : " + smartIG.getActualLevelName());
+            levelname.setText("Actual level : " + smartIG.getActualLevelName());
+        unitIGS.setText("Unit list : " + smartIG.getUnits());
+
 
         //Le bouton ajouter Niveau
         buttonAddLevel.setVisible(false);

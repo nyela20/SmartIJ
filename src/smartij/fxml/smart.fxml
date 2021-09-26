@@ -2,15 +2,16 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueSmartIJ">
+<BorderPane prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color: #FFFAFA;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueSmartIJ">
    <bottom>
-      <HBox prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="5.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <VBox>
-            <Button alignment="TOP_LEFT" maxWidth="200.0" mnemonicParsing="false" onAction="#open" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: #808080;" text="Ouvrir fichier">
+            <Button alignment="TOP_LEFT" maxWidth="200.0" mnemonicParsing="false" onAction="#open" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: #808080;" text="Open file">
                <effect>
                   <InnerShadow>
                      <color>
@@ -18,21 +19,79 @@
                      </color>
                   </InnerShadow>
                </effect>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/ouvrir.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
-            <Button fx:id="buttonAddCat" maxWidth="200.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="30.0" style="-fx-background-color: #4169E1; -fx-border-color: white;" text="Ajouter C" underline="true" visible="false">
+            <Button fx:id="buttonAddCat" maxWidth="200.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="30.0" style="-fx-background-color: #B22222; -fx-border-color: white;" text="Add C" underline="true" visible="false">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/save.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </VBox>
          <VBox prefHeight="56.0" prefWidth="143.0">
-            <Button fx:id="buttonAddLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#addLevel" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: #808080;" text="Ajouter niveau" visible="false" />
-            <Button fx:id="buttonChangeLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#changeLevel" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: white;" text="Changer niveau" visible="false" />
+            <Button fx:id="buttonAddLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#addLevel" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: #808080;" text="Add level" visible="false">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/plus.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="buttonChangeLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#changeLevel" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: white;" text="Change level" visible="false">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/renommer.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
          </VBox>
-         <VBox prefHeight="43.0" prefWidth="268.0" style="-fx-border-color: black;">
-            <Label fx:id="unitIGS" prefHeight="20.0" prefWidth="300.0" text="Tableau unités : " />
-            <Label fx:id="levelname" prefHeight="20.0" prefWidth="291.0" text="Niveau actuel : " />
-            <Label fx:id="filename" prefHeight="20.0" prefWidth="300.0" text="Choisissez un fichier ..." />
+         <VBox prefHeight="43.0" prefWidth="268.0" style="-fx-border-color: black; -fx-background-color: #F9F6EF;">
+            <Label fx:id="unitIGS" prefHeight="20.0" prefWidth="300.0" text="Unit list : ">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/save.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Label>
+            <Label fx:id="levelname" prefHeight="20.0" prefWidth="291.0" text="Actual level : ">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/save.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Label>
+            <Label fx:id="filename" prefHeight="20.0" prefWidth="300.0" text="Choose a file">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../sources/images/menulogo/save.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Label>
+         </VBox>
+         <VBox prefHeight="200.0" prefWidth="100.0">
+            <children>
+               <ImageView fitHeight="70.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../sources/images/cometh/dark.jpg" />
+                  </image>
+               </ImageView>
+            </children>
          </VBox>
       </HBox>
    </bottom>
@@ -40,6 +99,6 @@
       <VBox fx:id="ElementIGS" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </left>
    <center>
-      <Pane fx:id="postitPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <Pane fx:id="postitPane" prefHeight="331.0" prefWidth="536.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

@@ -4,20 +4,20 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueMenuSmartIJ">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="1000.0" style="-fx-background-color: #F0F8FF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueMenuSmartIJ">
     <top>
-        <MenuBar maxHeight="1.7976931348623157E308" prefHeight="31.0" prefWidth="1000.0" style="-fx-background-color: #CC9966;" BorderPane.alignment="CENTER">
+        <MenuBar maxHeight="1.7976931348623157E308" prefHeight="31.0" prefWidth="1000.0" style="-fx-background-color: #F9F6EF; -fx-border-color: #A8A8A8;" BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="File">
                 <MenuItem mnemonicParsing="false" onAction="#open" text="Open">
                <graphic>
                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                       <Image url="@../sources/images/menulogo/ouvrir.png"/>
+                       <Image url="@../sources/images/menulogo/ouvrir.png" />
                    </ImageView>
                </graphic></MenuItem>
                 <MenuItem fx:id="menuquit" mnemonicParsing="false" onAction="#quit" text="Quit">
                <graphic>
                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                       <Image url="@../sources/images/menulogo/quitter.png"/>
+                       <Image url="@../sources/images/menulogo/quitter.png" />
                    </ImageView>
                </graphic></MenuItem>
             </Menu>
@@ -25,47 +25,40 @@
                 <MenuItem mnemonicParsing="false" onAction="#addUnit" text="Add unit">
                <graphic>
                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                       <Image url="@../sources/images/menulogo/plus.png"/>
+                       <Image url="@../sources/images/menulogo/plus.png" />
                    </ImageView>
                </graphic></MenuItem>
                 <MenuItem mnemonicParsing="false" onAction="#addLevel" text="Add level">
                <graphic>
                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                       <Image url="@../sources/images/menulogo/plus.png"/>
+                       <Image url="@../sources/images/menulogo/plus.png" />
                    </ImageView>
                </graphic></MenuItem>
                 <MenuItem mnemonicParsing="false" onAction="#changeLevel" text="Change level">
                <graphic>
                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                       <Image url="@../sources/images/menulogo/renommer.png"/>
+                       <Image url="@../sources/images/menulogo/renommer.png" />
                    </ImageView>
                </graphic></MenuItem>
-                <MenuItem mnemonicParsing="false" onAction="#removeAllUnit" text="Remove all unit">
+                <MenuItem mnemonicParsing="false" onAction="#removeAllUnit" text="Remove unit">
                <graphic>
                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                       <Image url="@../sources/images/menulogo/effacer.png"/>
+                       <Image url="@../sources/images/menulogo/effacer.png" />
                    </ImageView>
                </graphic></MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#removeSelectedCat" text="Remove category">
-               <graphic>
-                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                       <Image url="@../sources/images/menulogo/effacer.png"/>
-                   </ImageView>
-               </graphic>
-            </MenuItem>
             </Menu>
             <Menu mnemonicParsing="false" text="Tools">
                 <MenuItem mnemonicParsing="false" onAction="#writeInFile" text="Write in file">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../sources/images/menulogo/ouvrir.png"/>
+                            <Image url="@../sources/images/menulogo/ouvrir.png" />
                         </ImageView>
                     </graphic>
                 </MenuItem>
                 <MenuItem mnemonicParsing="false" text="Generate file">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../sources/images/menulogo/ouvrir.png"/>
+                            <Image url="@../sources/images/menulogo/ouvrir.png" />
                         </ImageView>
                     </graphic>
                 </MenuItem>

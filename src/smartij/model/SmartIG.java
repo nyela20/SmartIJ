@@ -3,6 +3,8 @@ package smartij.model;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -13,7 +15,6 @@ import smartij.views.VueBoxChoiceSmartIJ;
 import smartij.views.VueBoxDialogSmartIJ;
 import javax.swing.*;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,6 +40,15 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         super();
         addUnits("u", "m2", "ml", "m²");
     }
+
+    /**
+     * retourne les unités en mémoire
+     * @return les unités en mémoire
+     */
+    public String getUnits(){
+        return unitIGS.toString();
+    }
+
 
     /**
      * ajouter une liste d'unités
@@ -87,15 +97,18 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
     /**
      * la fonction supprime une unité
      *
-     * @param unitName la nom de l'unité
      */
-    public void removeUnit(String unitName) {
-        ChoiceDialog<Object> choiceDialog = new ChoiceDialog<>();
-        choiceDialog.getItems().addAll(unitIGS);
-        choiceDialog.showAndWait();
-        if (choiceDialog.getResult() != null && !(choiceDialog.getResult().toString().isEmpty())) {
-            removeUnit(choiceDialog.getResult().toString());
-            notifierObservateur();
+    public void removeUnit() {
+        if(file != null) {
+            ChoiceDialog<Object> choiceDialog = new ChoiceDialog<>();
+            choiceDialog.getItems().addAll(unitIGS);
+            choiceDialog.showAndWait();
+            if (choiceDialog.getResult() != null && !(choiceDialog.getResult().toString().isEmpty())) {
+                unitIGS.remove(choiceDialog.getResult());
+                notifierObservateur();
+            }
+        }else{
+            new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Veuillez ouvrir un fichier avant").getMessage());
         }
     }
 
@@ -257,7 +270,6 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
     public String getFileName() throws ExceptionSmartIJ {
         return file.getName();
     }
-
 
     /**
      * retourne le numéro de la dernière ligne libre d'un niveau
@@ -440,42 +452,6 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         }
     }
 
-/*
-    public void write(ElementIG elementIG) throws ExceptionSmartIJ {
-        XSSFRow row;
-        row = sheet.createRow(elementIG.getRowid());
-        writepre(row, elementIG);
-        for (int i = 0; i < elementIG.numberOfObjects(); i += 2) {
-            Cell cell = row.createCell(Objects.requireNonNull(getLevel(elementIG.getStringValueElement(i + 3))).getCellid());
-            cell.setCellValue(elementIG.getvalueElement(i + 2));
-        }
-    }
-  */
-
-
-
-/*
-    public void write(CategoryIG categoryIG){
-        categoryIG.setRowid(rowMax());
-        System.out.println("(C) setter r-> " + categoryIG.getRowid());
-        rowforIncrement();
-        System.out.println("(!)  rowforIncrement (!)");
-        //affichage
-        for(CategoryIG categoryIG1 : this){
-            for(ElementIG elementIG : categoryIG){
-                System.out.println("(!) rfi effect " + elementIG.getNameElement() + " r-> " + elementIG.getRowid());
-            }
-        }
-        //affichage
-        XSSFRow row;
-        row = sheet.createRow(categoryIG.getRowid());
-        Cell cellName = row.createCell(0);
-        cellName.setCellValue(categoryIG.getNameCategory());
-    }
-
- */
-
-
     /**
      * La fonction écrit tout dans le fichier
      * @throws ExceptionSmartIJ
@@ -585,8 +561,6 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
             choiceDialog.showAndWait();
             if (choiceDialog.getResult() != null && !(choiceDialog.getResult().toString().isEmpty())) {
                 this.actualLevel = choiceDialog.getResult().toString();
-                //rowforMax();
-                //System.out.println("(rowForMax) all r-> " + getLevel(actualLevel).getRowid());
                 notifierObservateur();
             }
         }
@@ -603,10 +577,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
                 if (!result.get().isEmpty()) {
                     CategoryIG categoryIG = new CategoryIG(result.get(), 100, 100);
                     if (!alreadyExist(categoryIG)) {
-                        //categoryIG.setRowid(rowMax());
-                        //System.out.println("new (C) " + categoryIG.getNameCategory() + " r-> " + categoryIG.getRowid());
                         categoryIGS.add(categoryIG);
-                        //updateRowForAllLevel();
                         notifierObservateur();
                     } else {
                         new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Une catégorie de même nom existe déjà").getMessage());
@@ -625,9 +596,13 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         updateRowForAllLevel();
         System.out.println("update all r->  " + getLevel(actualLevel).getRowid());
 
+        CellStyle style = workbook.createCellStyle();
+        style.setFillBackgroundColor(IndexedColors.YELLOW.getIndex());
+
         XSSFRow row;
         row = sheet.createRow(categoryIG.getRowid());
         Cell cellName = row.createCell(0);
+        cellName.setCellStyle(style);
         cellName.setCellValue(categoryIG.getNameCategory());
 
         try {
@@ -654,7 +629,6 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
                 if(!alreadyExist(niveauIG)) {
                     niveauIGS.add(niveauIG);
                     notifierObservateur();
-                    //écrire le level dans le xlsx une fois ajouter
                     writeLevel();
                 }else{
                     new BoxDialogExceptionSmartIJ(new ExceptionSmartIJ("Un niveau du même nom existe déjà").getMessage());
@@ -668,10 +642,14 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
      * La fonction rajoute/écrit un nouveau niveau dans e ficier .xlsx
      */
     private void writeLevel() {
+        CellStyle style = workbook.createCellStyle();
+        style.setFillBackgroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+
         XSSFRow row;
         row = sheet.createRow(2);
         for (NiveauIG obj : niveauIGS) {
             Cell cell = row.createCell(obj.getCellid());
+            cell.setCellStyle(style);
             cell.setCellValue(obj.getLevelname());
         }
         try {
@@ -698,25 +676,10 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
                 ArrayList<String> suggest = new ArrayList<>(List.of(suggestion.get(0).split(" ")));
                 ElementIG elementIG = createKnownElement(suggest,userWord);
                 getCategory(elementIG.getNameCategorie()).addElement(elementIG);
-                //ifalredyExit(elementIG);
                 notifierObservateur();
             }
         }
     }
-
-/*
-    private void ifalredyExit(ElementIG elementIG) throws ExceptionSmartIJ {
-        if(alreadyExist(elementIG)){
-            ElementIG father = getElement(elementIG.getNameElement());
-            father.addObject(elementIG.getvalueElement(2), getActualLevelName());
-            System.out.println("j'incrément pas le niveau (father) " + actualLevel + " rf-> " + father.getRowid() + " rn-> " + getLevel(actualLevel).getRowid());
-        }else {
-            getCategory(actualCategory).addElement(elementIG);
-            getLevel(getActualLevelName()).incrementRowid();
-            System.out.println("j'incrément le niveau " + actualLevel + " r-> " + getLevel(actualLevel).getRowid());
-        }
-    }
-*/
 
     public void write(ElementIG elementIG) throws ExceptionSmartIJ {
         XSSFRow row;
@@ -733,11 +696,9 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
             for (int i = 0; i < father.numberOfObjects(); i += 2) {
                 Cell cell = row.createCell(Objects.requireNonNull(getLevel(father.getStringValueElement(i + 3))).getCellid());
                 cell.setCellValue(father.getvalueElement(i + 2));
-                System.out.println("(father) write " + father.getvalueElement(i+2) + " in = " + getLevel(father.getStringValueElement(i+3)).getLevelname());
+                System.out.println("(father) write " + father.getvalueElement(i+2) + " in " + getLevel(father.getStringValueElement(i+3)).getLevelname());
             }
         } else {
-            //Si aucun élément similaire en mémoire
-
             elementIGSub.add(elementIG);
             updateRowForAllLevel();
             System.out.println("update all  r-> " + getLevel(getActualLevelName()).getRowid());
@@ -885,12 +846,8 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         obj[3] = getActualLevelName();
         ElementIG elementIG;
         elementIG = new ElementIG(obj, Objects.requireNonNull(getLevel(getActualLevelName())),Objects.requireNonNull(getCategory(getActualCategoryName())));
-        //System.out.println("new (E) " + elementIG.getNameElement() + " r-> " + elementIG.getRowid());
         return elementIG;
     }
-
-
-
 
     @Override
     public Iterator<CategoryIG> iterator() {

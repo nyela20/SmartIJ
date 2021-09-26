@@ -2,17 +2,17 @@
 
 
 #buttonPostit {
-   -fx-background-color: black;
-   -fx-text-fill: white;
+   -fx-background-color: #FFF5EE;
+   -fx-text-fill: #585858	;
 }
 
 #vboxPostit {
-   -fx-background-color: #E8E8E8	;
+   -fx-background-color: #FFFAFA;
 }
 
 #LabelPostit {
-   -fx-background-color: #E8E8E8	;
-    -fx-border-color: white;
+   -fx-background-color: #FFF5EE;
+   -fx-text-fill: #585858;
 }
 
 #postit_Not_Selected{
@@ -21,7 +21,7 @@
                radial-gradient(center 50% -40%, radius 200%, #00bfff 45%, #00bfff 50%);
                -fx-background-radius: 6, 5;
                -fx-background-insets: 0, 1;
-               -fx-effect: dropshadow( three-pass-box , #707070			 , 20, 0.3 , 0 , 1 );
+               -fx-effect: dropshadow( three-pass-box , black	, 20, 0.3 , 0 , 1 );
                -fx-text-fill: #25e0f0;
                -fx-font-weight: normal;
 }
@@ -32,7 +32,7 @@
                radial-gradient(center 50% -40%, radius 200%, #00bfff 45%, #00bfff 50%);
                -fx-background-radius: 6, 5;
                -fx-background-insets: 0, 1;
-               -fx-effect: dropshadow( three-pass-box , red , 20, 0.3 , 0 , 1 );
+               -fx-effect: dropshadow( three-pass-box , #B22222 , 20, 0.3 , 0 , 1 );
                -fx-text-fill: #25e0f0;
                -fx-font-weight: bold;
 }
