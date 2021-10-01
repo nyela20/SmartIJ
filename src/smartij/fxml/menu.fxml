@@ -63,6 +63,7 @@
                     </graphic>
                 </MenuItem>
             </Menu>
+         <Menu fx:id="menuSuggest" mnemonicParsing="false" text="Generate" />
         </MenuBar>
     </top>
 </BorderPane>

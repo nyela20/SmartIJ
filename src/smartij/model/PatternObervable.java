@@ -3,14 +3,16 @@ package smartij.model;
 import smartij.exceptions.ExceptionSmartIJ;
 import smartij.views.PatternObserver;
 
+import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public abstract class PatternObervable {
-    private final ArrayList<PatternObserver> observateurPatternObserver = new ArrayList<>();
+public abstract class PatternObervable  {
+    private ArrayList<PatternObserver> observateurPatternObserver = new ArrayList<>();
 
-    public PatternObervable() {
-    }
+    public PatternObervable() {}
+
 
     /**
      * ajoute un PatternObserver
@@ -24,7 +26,9 @@ public abstract class PatternObervable {
      * notifier les vues
      */
     public void notifierObservateur() {
-        for (PatternObserver patternObserver : observateurPatternObserver) {
+        Iterator<PatternObserver> patternObserverIterator = observateurPatternObserver.iterator();
+        while (patternObserverIterator.hasNext()) {
+            PatternObserver patternObserver = patternObserverIterator.next();
             try {
                 patternObserver.reagir();
             } catch (IOException | ExceptionSmartIJ e) {
@@ -32,4 +36,5 @@ public abstract class PatternObervable {
             }
         }
     }
+
 }

@@ -76,13 +76,11 @@ public class VueSmartIJ implements PatternObserver {
     public void reagir() throws IOException, ExceptionSmartIJ {
         postitPane.getChildren().clear();
 
-
         //rafraîchir
         filename.setText("You have chosen the file : " + smartIG.getFileName());
         if (smartIG.getActualLevelName() != null)
             levelname.setText("Actual level : " + smartIG.getActualLevelName());
         unitIGS.setText("Unit list : " + smartIG.getUnits());
-
 
         //Le bouton ajouter Niveau
         buttonAddLevel.setVisible(false);
@@ -101,13 +99,5 @@ public class VueSmartIJ implements PatternObserver {
                 }
             }
         }
-
-
-        /*Menu*/
-        FXMLLoader loaderMenu = new FXMLLoader();
-        loaderMenu.setLocation(getClass().getResource("../fxml/menu.fxml"));
-        loaderMenu.setControllerFactory(iC -> new VueMenuSmartIJ(smartIG));
-        pane.setTop(loaderMenu.load());
     }
-
 }

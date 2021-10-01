@@ -1,25 +1,39 @@
 package smartij.views;
 
 
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.VBox;
 import smartij.exceptions.ExceptionSmartIJ;
+import smartij.model.CategoryIG;
+import smartij.model.ElementIG;
 import smartij.model.SmartIG;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class VueMenuSmartIJ implements PatternObserver {
 
-
+    @FXML
+    private Menu menuSuggest;
 
     private final SmartIG smartIG;
+    private ArrayList<Menu> menuArray = new ArrayList<>();
 
     public VueMenuSmartIJ(SmartIG smartIG) {
         this.smartIG = smartIG;
+        this.smartIG.ajouter(this);
     }
 
     /**
      * open a html file
      */
-    public void open() {
+    public void open(){
         smartIG.open();
     }
 
@@ -71,7 +85,79 @@ public class VueMenuSmartIJ implements PatternObserver {
         }
     }
 
+    private MenuItem get(String menu) throws ExceptionSmartIJ {
+
+        throw new ExceptionSmartIJ("Aucun Menu trouvé");
+    }
+
+
+
+    private void addSuggestInMenu(Menu menu,String nameEl) {
+
+        //on rajoute
+        MenuItem elem = new MenuItem(nameEl);
+        //setOnAction
+        elem.setOnAction((actionEvent -> {
+            try {
+                smartIG.setCategory(menu.getText());
+                smartIG.suggestForUser(smartIG.suggestWord(smartIG.getText(), elem.getText()), elem.getText());
+            } catch (ExceptionSmartIJ e) {
+                e.printStackTrace();
+            }
+        }));
+        if(!alreadyExist(menu,nameEl)){
+            menu.getItems().add(elem);
+        }
+    }
+
+    private boolean alreadyExist(Menu menu, String nameEl){
+        for(MenuItem menuItem : menu.getItems()){
+            if(menuItem.getText().equals(nameEl)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    private boolean alreadyExist(String nameCategory){
+        for(Menu menu : menuArray){
+            if(menu.getText().equals(nameCategory)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private Menu getMenu(String nameMenu) throws ExceptionSmartIJ {
+        for(Menu menu : menuArray){
+            if(menu.getText().equals(nameMenu)){
+                return menu;
+            }
+        }
+        throw new ExceptionSmartIJ("Erreur : aucun menu trouvé");
+    }
+
+    private void addSuggestInMap() throws ExceptionSmartIJ {
+        for (CategoryIG categoryIG : smartIG) {
+            for (ElementIG elementIG : categoryIG) {
+                Menu menu = new Menu(elementIG.getNameCategorie());
+                if (!alreadyExist(menu.getText())) {
+                    menuArray.add(menu);
+                    menuSuggest.getItems().add(menu);
+                }
+                addSuggestInMenu(getMenu(menu.getText()), elementIG.getNameElement());
+            }
+        }
+    }
+
 
     @Override
-    public void reagir() {}
+    public void reagir() {
+        try {
+            addSuggestInMap();
+        } catch (ExceptionSmartIJ e) {}
+    }
 }
