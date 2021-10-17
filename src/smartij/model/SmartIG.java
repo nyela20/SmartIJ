@@ -12,6 +12,8 @@ import smartij.fabrics.FabricRowsIdAndCellId;
 import smartij.views.VueBoxDialogSmartIJ;
 import javax.swing.*;
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,6 +34,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
     private final ArrayList<ElementIG> elementIGSub = new ArrayList<>();
     private final XSSFWorkbook workbook = new XSSFWorkbook();
     private final XSSFSheet sheet = workbook.createSheet();
+    private String path = "";
 
 
     public SmartIG() {
@@ -63,7 +66,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
      *
      * @param newcat la nouvelle catégorie
      */
-    public void setCategory(String newcat) {
+    public void setActualCategory(String newcat) {
         this.actualCategory = newcat;
     }
 
@@ -126,6 +129,17 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
                 return c;
         }
         throw new ExceptionSmartIJ("Erreur mémoire : CatégorieIG introuvable");
+    }
+
+    public void removeCategorie(){
+        Iterator<CategoryIG> it = iterator();
+        while (it.hasNext()) {
+            CategoryIG categoryIG = it.next();
+            if (categoryIG.isSelected()) {
+                it.remove();
+            }
+        }
+        notifierObservateur();
     }
 
 
@@ -192,6 +206,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         return false;
     }
 
+
     /**
      * la fonction verifie si une categorie
      * comme celui en paramètre existe déjà
@@ -208,12 +223,15 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         return false;
     }
 
+
+
+
     /**
      * retourne le state actuel
      *
      * @return le state acutel
      */
-    public int getState() {
+    public int getState(){
         return state;
     }
 
@@ -225,6 +243,8 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
     public String getFileName() {
         return file.getName();
     }
+
+
 
 
     /**
@@ -288,6 +308,52 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         return true;
     }
 
+    public void generateElementFromFile(){
+        try{
+            JFileChooser jFileChooser = new JFileChooser();
+            jFileChooser.setMultiSelectionEnabled(false);
+            jFileChooser.setApproveButtonText("choisir");
+            int res = jFileChooser.showSaveDialog(jFileChooser.getParent());
+            if(res == JFileChooser.APPROVE_OPTION){
+                readToGenerate(jFileChooser.getSelectedFile());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void readToGenerate(File file){
+        BufferedReader bufferedreader = null;
+        FileReader filereader = null;
+        try {
+            filereader = new FileReader(file.getPath());
+            if (file.length() != 0) {
+                bufferedreader = new BufferedReader(filereader);
+                String strCurrentLine;
+                while ((strCurrentLine = bufferedreader.readLine()) != null) {
+                    String categorieName = bufferedreader.readLine();
+                    CategoryIG categoryIG = new CategoryIG(categorieName,100,100);
+                    if(!alreadyExist(categoryIG)){
+                        categoryIGS.add(categoryIG);
+                    }
+                    setActualCategory(categorieName);
+                    search(strCurrentLine);
+                }
+            }
+        } catch (IOException | ExceptionSmartIJ e){
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bufferedreader != null)
+                    bufferedreader.close();
+                if (filereader != null)
+                    filereader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     /**
      * Ouverture du fichier de l'utilisateur
@@ -320,6 +386,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
             System.out.println(e.getMessage());
         }
     }
+
 
 
     /**
@@ -430,15 +497,14 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         textInputDialog.showAndWait();
         String userWord = textInputDialog.getEditor().getText();
         if (!userWord.isEmpty() && !text.isEmpty()) {
-            if (!suggestWord(text, userWord).isEmpty()) {
-                suggestForUser(suggestWord(text, userWord), userWord);
-            } else {
-                throw new ExceptionSmartIJ("Aucun mot correspondant");
-            }
-        }    }
+                search(userWord);
+        }
+    }
 
-
-
+    public void search(String userword) throws ExceptionSmartIJ {
+        System.out.println("inside search(userword)");
+        suggestForUser(suggestWord(text, userword),userword);
+    }
 
     /**
      * La fonction va créer un fichier .xlsx
@@ -503,6 +569,19 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
                 this.actualLevel = choiceDialog.getResult().toString();
                 notifierObservateur();
             }
+        }
+    }
+
+
+
+    public void generateFile(){
+        JFrame parentFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            System.out.println("Save as file: " + fileToSave.getAbsolutePath());
         }
     }
 
@@ -609,15 +688,23 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
      * @param userWord   le mot entré par l'utilisateur
      */
     public void suggestForUser(ArrayList<String> suggestion, String userWord) throws ExceptionSmartIJ {
+        System.out.println("suggestForUser with param : " + suggestion + " " + userWord);
         if(actualLevel != null &&!(actualLevel.isEmpty())) {
             if (suggestion.size() > 0) {
+                System.out.println("suggestion is not empty");
                 ArrayList<String> suggest = new ArrayList<>(List.of(suggestion.get(0).split(" ")));
+                System.out.println("ArrayList<String> suggest = new ArrayList<>(List.of(suggestion.get(0).split(' ')));");
+                System.out.println("\t-> suggest : " + suggest);
+                System.out.println("createKnownElement(" + suggest + "," + userWord + ");");
                 ElementIG elementIG = createKnownElement(suggest,userWord);
+                System.out.println("new Element created : " + elementIG.getNameElement() + " " + elementIG.getNameLevel() + " " + elementIG.getUnitElement());
                 getCategory(elementIG.getNameCategorie()).addElement(elementIG);
                 notifierObservateur();
             }
         }
     }
+
+
 
     public void write(ElementIG elementIG) throws ExceptionSmartIJ {
         XSSFRow row;
@@ -627,7 +714,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
         if (alreadyExistSub(elementIG)){
             ElementIG father = getElementSub(elementIG.getNameElement());
             father.addObject(elementIG.getvalueElement(2), elementIG.getNameLevel());
-            System.out.println("j'incrément pas le niveau (father) " + father.getNameLevel() + " rf-> " + father.getRowid() + " rn-> " + getLevel(actualLevel).getRowid());
+            System.out.println("j'incrémente pas le niveau (father) " + father.getNameLevel() + " rf-> " + father.getRowid() + " rn-> " + getLevel(actualLevel).getRowid());
             System.out.println("(father) obj -> " + father.obj());
             row = sheet.createRow(father.getRowid());
             writepre(row, father);
@@ -667,11 +754,17 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
      * @return un tableau contenant les suggestions
      */
     public ArrayList<String> suggestWord(ArrayList<String> text, String userword) {
+        System.out.println("inside suggestWord()");
         ArrayList<String> suggestion = new ArrayList<>();
+        System.out.println("suggestWordImprove(text," + userword + ")");
         if(suggestWordImprove(text,userword) > 0){
-            int index = searchFirstNumberFrom(text,suggestWordImprove(text,userword));
+            int indexFi = suggestWordImprove(text,userword);
+            System.out.println("suggestWordImprove return " + indexFi);
+            int index = searchFirstNumberFrom(text,indexFi);
+            System.out.println("searchFirstNumberFrom return " + index);
             suggestion.add(findUnit(text,index) + " " + text.get(index));
         }
+        System.out.println("get out suggestWord() with : " + suggestion);
         return suggestion;
     }
 
@@ -776,7 +869,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
     }
 
     @Override
-    public Iterator<CategoryIG> iterator() {
+    public Iterator<CategoryIG> iterator(){
         return categoryIGS.iterator();
     }
 }

@@ -10,6 +10,7 @@ import smartij.exceptions.ExceptionSmartIJ;
 import smartij.listenerDnd.ListenerDrop;
 import smartij.listenerDnd.ListenerSetDrag;
 import smartij.model.CategoryIG;
+import smartij.model.ElementIG;
 import smartij.model.SmartIG;
 import java.io.IOException;
 
@@ -95,7 +96,10 @@ public class VueSmartIJ implements PatternObserver {
                     buttonAddCat.setVisible(true);
                 //dessin des catégorie
                 for (CategoryIG categoryIG : smartIG) {
-                    postitPane.getChildren().add(new VuePostit(categoryIG.getNameCategory(), categoryIG, smartIG));
+                    VuePostit vuePostit = new VuePostit(categoryIG.getNameCategory(), categoryIG, smartIG);
+                    vuePostit.setOpacity(0.9);
+                    postitPane.getChildren().add(vuePostit);
+
                 }
             }
         }

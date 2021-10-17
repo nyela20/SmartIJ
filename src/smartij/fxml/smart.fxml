@@ -7,7 +7,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color: #FFFAFA;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueSmartIJ">
+<BorderPane prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color: #dcdcdc;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueSmartIJ">
    <bottom>
       <HBox prefHeight="5.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <VBox>

@@ -2,19 +2,14 @@ package smartij.views;
 
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.VBox;
 import smartij.exceptions.ExceptionSmartIJ;
 import smartij.model.CategoryIG;
 import smartij.model.ElementIG;
 import smartij.model.SmartIG;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class VueMenuSmartIJ implements PatternObserver {
@@ -47,7 +42,11 @@ public class VueMenuSmartIJ implements PatternObserver {
 
 
     public void removeSelectedCat(){
-        //smartIG.removeSelectedCat();
+        smartIG.removeCategorie();
+    }
+
+    public void generateFile(){
+        smartIG.generateFile();
     }
 
     public void writeInFile(){
@@ -86,20 +85,18 @@ public class VueMenuSmartIJ implements PatternObserver {
     }
 
     private MenuItem get(String menu) throws ExceptionSmartIJ {
-
-        throw new ExceptionSmartIJ("Aucun Menu trouvÃ©");
+        throw new ExceptionSmartIJ("Aucun Menu trouvé");
     }
 
 
 
     private void addSuggestInMenu(Menu menu,String nameEl) {
-
         //on rajoute
         MenuItem elem = new MenuItem(nameEl);
         //setOnAction
         elem.setOnAction((actionEvent -> {
             try {
-                smartIG.setCategory(menu.getText());
+                smartIG.setActualCategory(menu.getText());
                 smartIG.suggestForUser(smartIG.suggestWord(smartIG.getText(), elem.getText()), elem.getText());
             } catch (ExceptionSmartIJ e) {
                 e.printStackTrace();
@@ -130,6 +127,10 @@ public class VueMenuSmartIJ implements PatternObserver {
         return false;
     }
 
+    public void generateElementFromFile(){
+        smartIG.generateElementFromFile();
+    }
+
 
     private Menu getMenu(String nameMenu) throws ExceptionSmartIJ {
         for(Menu menu : menuArray){
@@ -137,7 +138,7 @@ public class VueMenuSmartIJ implements PatternObserver {
                 return menu;
             }
         }
-        throw new ExceptionSmartIJ("Erreur : aucun menu trouvÃ©");
+        throw new ExceptionSmartIJ("Erreur : aucun menu trouvé");
     }
 
     private void addSuggestInMap() throws ExceptionSmartIJ {
@@ -152,7 +153,6 @@ public class VueMenuSmartIJ implements PatternObserver {
             }
         }
     }
-
 
     @Override
     public void reagir() {

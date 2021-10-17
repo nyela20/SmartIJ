@@ -2,7 +2,7 @@
 
 
 #buttonPostit {
-   -fx-background-color: #FFF5EE;
+   -fx-background-color: #FFFAFA;
    -fx-text-fill: #585858	;
 }
 
@@ -11,7 +11,7 @@
 }
 
 #LabelPostit {
-   -fx-background-color: #FFF5EE;
+   -fx-background-color: #FFFAFA;
    -fx-text-fill: #585858;
 }
 

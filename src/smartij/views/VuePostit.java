@@ -3,7 +3,6 @@ package smartij.views;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -16,10 +15,7 @@ import smartij.model.ElementIG;
 import smartij.model.SmartIG;
 
 
-import java.util.EventListener;
-
 import static jdk.nashorn.internal.objects.Global.Infinity;
-import static jdk.nashorn.internal.objects.Global.objectPrototype;
 
 
 public class VuePostit extends BorderPane implements PatternObserver {
@@ -47,7 +43,7 @@ public class VuePostit extends BorderPane implements PatternObserver {
         init();
         button.setOnMousePressed(v -> {
             try {
-                smartIG.setCategory(this.namePostit);
+                smartIG.setActualCategory(this.namePostit);
                 smartIG.search();
             } catch (ExceptionSmartIJ e) {
                 System.err.println(e.getMessage());
