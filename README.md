@@ -1,6 +1,6 @@
 # SmartIJ
 - SmartIJ is an application (tools) which convert a board from a .pdf to a spreadsheet in .xlxs format (LibreOffice Calc / Word Excel)
-- /!\ This application is made for Autocad user /!\, I know they need to convert a .pdf file to a .xlsx file when they work !!
+- /!\ This application is made for Autocad user, I know they need to convert a .pdf file to a .xlsx file when they work !!
 
 Tutorial : 
   - Separate all your pdf page one by one (which means if your .pdf file initally have 5 page, you're gonna end up with 5 differents .pdf files)
