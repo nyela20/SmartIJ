@@ -1,4 +1,4 @@
-# SmartIJ
+# SmartIJ for Linux
 - SmartIJ is an application (tools) which convert a board from a .pdf to a spreadsheet in .xlxs format (LibreOffice Calc / Word Excel)
 - /!\ This application is made for Autocad user, I know they need to convert a .pdf file to a .xlsx file when they work !!
 
