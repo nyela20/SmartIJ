@@ -1,4 +1,4 @@
-# SmartIJ for Linux/Windows (Download the .jar)
+# SmartIJ for Linux/Windows 
 
 - SmartIJ is an tools which convert
   a board from a .pdf to a spreadsheet
