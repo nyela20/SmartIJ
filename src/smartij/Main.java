@@ -14,7 +14,7 @@ import java.io.IOException;
 public class Main extends Application {
 
     int LargeurPanneauPrincipale = 1000;
-    int HauteurPanneauPrincipale = 1000;
+    int HauteurPanneauPrincipale = 750;
 
 
     @Override

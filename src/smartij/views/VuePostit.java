@@ -35,7 +35,6 @@ public class VuePostit extends BorderPane implements PatternObserver {
         else
             this.setId("postit_Selected");
 
-
         this.namePostit = namePostit;
         this.prefHeight = categoryIG.getHeight();
         this.prefWidth = categoryIG.getWidth();
@@ -57,7 +56,9 @@ public class VuePostit extends BorderPane implements PatternObserver {
     private void addElementOnVbox(){
         vbox.getChildren().clear();
         for(ElementIG elementIG : categoryIG) {
-            vbox.getChildren().add(new Label(elementIG.obj().toString()));
+            Label label = new Label(elementIG.obj().toString());
+            label.setStyle("-fx-text-fill:#dedede;");
+            vbox.getChildren().add(label);
         }
     }
 

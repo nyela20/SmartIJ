@@ -77,7 +77,6 @@ public class VueSmartIJ implements PatternObserver {
     public void reagir() throws IOException, ExceptionSmartIJ {
         postitPane.getChildren().clear();
 
-        //rafraîchir
         filename.setText("You have chosen the file : " + smartIG.getFileName());
         if (smartIG.getActualLevelName() != null)
             levelname.setText("Actual level : " + smartIG.getActualLevelName());

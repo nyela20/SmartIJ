@@ -6,4 +6,5 @@ public class ExceptionSmartIJ extends Exception {
         super(message);
         System.err.println(message);
     }
+    //try
 }

@@ -98,7 +98,7 @@ public class CategoryIG implements Iterable<ElementIG>{
         this.posx = posx;
         this.posy = posy;
     }
-
+    //try
 
     @Override
     public Iterator<ElementIG> iterator() {

@@ -61,7 +61,6 @@ public class VueBoxChoiceSmartIJ extends ChoiceDialog {
         for (String s : suggestion) {
             getItems().add(s);
         }
-        //ajouter choix manuel
         getItems().add("Saisir...");
     }
 

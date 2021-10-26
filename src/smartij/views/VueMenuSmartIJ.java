@@ -91,9 +91,7 @@ public class VueMenuSmartIJ implements PatternObserver {
 
 
     private void addSuggestInMenu(Menu menu,String nameEl) {
-        //on rajoute
         MenuItem elem = new MenuItem(nameEl);
-        //setOnAction
         elem.setOnAction((actionEvent -> {
             try {
                 smartIG.setActualCategory(menu.getText());

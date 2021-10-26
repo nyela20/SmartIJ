@@ -1,38 +1,46 @@
 /**-----STYLE-BOUTONS-----*/
 
+.menu .label{
+    -fx-text-fill: #dedede;
+}
+
+.menu-item .label{
+    -fx-text-fill: black;
+}
+
 
 #buttonPostit {
-   -fx-background-color: #FFFAFA;
-   -fx-text-fill: #585858	;
+   -fx-background-color: #3c3f41;
+   -fx-text-fill: #dedede;
 }
 
 #vboxPostit {
-   -fx-background-color: #FFFAFA;
+   -fx-background-color: #3c3f41;
 }
 
 #LabelPostit {
-   -fx-background-color: #FFFAFA;
-   -fx-text-fill: #585858;
+   -fx-background-color: #3c3f41;
+   -fx-text-fill: #dedede;
 }
 
 #postit_Not_Selected{
     -fx-background-color:
-               linear-gradient(#00bfff ,#00bfff),
-               radial-gradient(center 50% -40%, radius 200%, #00bfff 45%, #00bfff 50%);
+               linear-gradient(#3c3f41 ,#3c3f41),
+               radial-gradient(center 50% -40%, radius 200%, #3c3f41 45%, #3c3f41 50%);
                -fx-background-radius: 6, 5;
                -fx-background-insets: 0, 1;
                -fx-effect: dropshadow( three-pass-box , black	, 20, 0.3 , 0 , 1 );
-               -fx-text-fill: #25e0f0;
+               -fx-text-fill: white;
                -fx-font-weight: normal;
 }
 
 #postit_Selected{
     -fx-background-color:
-               linear-gradient(#00bfff ,#00bfff),
-               radial-gradient(center 50% -40%, radius 200%, #00bfff 45%, #00bfff 50%);
+               linear-gradient(#3c3f41 ,#3c3f41),
+               radial-gradient(center 50% -40%, radius 200%, #3c3f41 45%, #3c3f41 50%);
                -fx-background-radius: 6, 5;
                -fx-background-insets: 0, 1;
                -fx-effect: dropshadow( three-pass-box , #B22222 , 20, 0.3 , 0 , 1 );
-               -fx-text-fill: #25e0f0;
+               -fx-text-fill: white;
                -fx-font-weight: bold;
 }

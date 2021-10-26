@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color: #dcdcdc;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueSmartIJ">
+<BorderPane prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color: #2b2b2b;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueSmartIJ">
    <bottom>
       <HBox prefHeight="5.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
-         <VBox>
-            <Button alignment="TOP_LEFT" maxWidth="200.0" mnemonicParsing="false" onAction="#open" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: #808080;" text="Open file">
-               <effect>
-                  <InnerShadow>
-                     <color>
-                        <Color red="1.0" green="1.0" blue="1.0" />
-                     </color>
-                  </InnerShadow>
-               </effect>
+         <VBox style="-fx-background-color: #F0F0F0;">
+            <Button alignment="TOP_LEFT" maxWidth="201.0" mnemonicParsing="false" onAction="#open" prefHeight="38.0" prefWidth="110.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Open file">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -27,7 +18,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="buttonAddCat" maxWidth="200.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="30.0" style="-fx-background-color: #B22222; -fx-border-color: white;" text="Add C" underline="true" visible="false">
+            <Button fx:id="buttonAddCat" maxWidth="200.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="20.0" prefWidth="110.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Add C" underline="true">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -40,8 +31,8 @@
                </graphic>
             </Button>
          </VBox>
-         <VBox prefHeight="56.0" prefWidth="143.0">
-            <Button fx:id="buttonAddLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#addLevel" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: #808080;" text="Add level" visible="false">
+         <VBox prefHeight="43.0" prefWidth="150.0" style="-fx-background-color: #2b2b2b;">
+            <Button fx:id="buttonAddLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#addLevel" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Add level">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -49,7 +40,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="buttonChangeLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#changeLevel" prefHeight="30.0" style="-fx-background-color: #F0F0F0; -fx-border-color: white;" text="Change level" visible="false">
+            <Button fx:id="buttonChangeLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#changeLevel" prefHeight="20.0" prefWidth="140.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Change level">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -58,8 +49,8 @@
                   </ImageView>
                </graphic></Button>
          </VBox>
-         <VBox prefHeight="43.0" prefWidth="268.0" style="-fx-border-color: black; -fx-background-color: #F9F6EF;">
-            <Label fx:id="unitIGS" prefHeight="20.0" prefWidth="300.0" text="Unit list : ">
+         <VBox prefHeight="43.0" prefWidth="268.0" style="-fx-border-color: #3c3f41; -fx-background-color: #3c3f41;">
+            <Label fx:id="unitIGS" prefHeight="20.0" prefWidth="300.0" style="-fx-text-fill: #dedede;" text="Unit list : ">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -67,7 +58,7 @@
                      </image>
                   </ImageView>
                </graphic></Label>
-            <Label fx:id="levelname" prefHeight="20.0" prefWidth="291.0" text="Actual level : ">
+            <Label fx:id="levelname" prefHeight="20.0" prefWidth="291.0" style="-fx-text-fill: #dedede;" text="Actual level : ">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -75,7 +66,7 @@
                      </image>
                   </ImageView>
                </graphic></Label>
-            <Label fx:id="filename" prefHeight="20.0" prefWidth="300.0" text="Choose a file">
+            <Label fx:id="filename" prefHeight="20.0" prefWidth="300.0" style="-fx-text-fill: #dedede;" text="Choose a file">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>

@@ -12,7 +12,7 @@ public class ElementIG {
     private final String nameLevel;
 
 
-    public ElementIG(Object[] objects, NiveauIG niveauIG, CategoryIG categoryIG) {
+    public ElementIG(Object[] objects, NiveauIG niveauIG, CategoryIG categoryIG){
         this.rowid = niveauIG.getRowid();
         this.categoryIG = categoryIG;
         this.nameLevel = niveauIG.getLevelname();
@@ -60,8 +60,6 @@ public class ElementIG {
     public int getRowid() {
         return rowid;
     }
-
-
 
     public void setRowid(int rowid) {
         this.rowid = rowid;

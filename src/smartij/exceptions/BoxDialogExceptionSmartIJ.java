@@ -9,5 +9,6 @@ public class BoxDialogExceptionSmartIJ {
         alert.setResizable(true);
         alert.setContentText(message);
         alert.showAndWait();
+        //try
     }
 }

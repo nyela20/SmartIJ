@@ -16,6 +16,7 @@ public class VueBoxDialogSmartIJ extends TextInputDialog {
         Optional<String> result = showAndWait();
         result.ifPresent(name -> answer = result.get());
     }
+    //try
 
 
     public String getAnswer() {

@@ -6,7 +6,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="1000.0" style="-fx-background-color: #F0F8FF;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smartij.views.VueMenuSmartIJ">
     <top>
-        <MenuBar maxHeight="1.7976931348623157E308" prefHeight="31.0" prefWidth="1000.0" style="-fx-background-color: #87cefa; -fx-border-color: #A8A8A8;" BorderPane.alignment="CENTER">
+        <MenuBar maxHeight="1.7976931348623157E308" minHeight="31.0" style="-fx-background-color: #3c3f41;" BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="File">
                 <MenuItem mnemonicParsing="false" onAction="#open" text="Open">
                <graphic>
@@ -48,11 +48,9 @@
                </graphic></MenuItem>
             <MenuItem mnemonicParsing="false" onAction="#removeSelectedCat" text="Remove Category">
                <graphic>
-                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../sources/images/menulogo/effacer.png" />
-                     </image>
-                  </ImageView>
+                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                       <Image url="@../sources/images/menulogo/effacer.png" />
+                   </ImageView>
                </graphic>
             </MenuItem>
             </Menu>
@@ -73,11 +71,9 @@
                 </MenuItem>
             <MenuItem id="generateElemFromFile" mnemonicParsing="false" onAction="#generateElementFromFile" text="Generate Elem from file">
                <graphic>
-                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../sources/images/menulogo/ouvrir.png" />
-                     </image>
-                  </ImageView>
+                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                       <Image url="@../sources/images/menulogo/ouvrir.png" />
+                   </ImageView>
                </graphic>
             </MenuItem>
             </Menu>
