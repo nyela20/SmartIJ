@@ -5,9 +5,7 @@
   in .xlxs .xls .dot format.
   
 - This application is made for Autocad
-  user, I know they need to convert 
-  a .pdf file to a .xlsx file when 
-  they work.
+  user.
 
 
 Tutorial : 
