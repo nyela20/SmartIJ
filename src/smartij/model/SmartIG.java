@@ -39,7 +39,7 @@ public class SmartIG extends PatternObervable implements Iterable<CategoryIG> {
     public SmartIG() {
         super();
         addUnits("u", "m2", "ml", "m^2");
-    }
+    }//try
 
     /**
      * retourne les unités en mémoire
