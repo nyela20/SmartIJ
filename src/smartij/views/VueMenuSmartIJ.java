@@ -85,7 +85,7 @@ public class VueMenuSmartIJ implements PatternObserver {
     }
 
     private MenuItem get(String menu) throws ExceptionSmartIJ {
-        throw new ExceptionSmartIJ("Aucun Menu trouvé");
+        throw new ExceptionSmartIJ("Aucun Menu trouvÃ©");
     }
 
 
@@ -136,7 +136,7 @@ public class VueMenuSmartIJ implements PatternObserver {
                 return menu;
             }
         }
-        throw new ExceptionSmartIJ("Erreur : aucun menu trouvé");
+        throw new ExceptionSmartIJ("Erreur : aucun menu trouvÃ©");
     }
 
     private void addSuggestInMap() throws ExceptionSmartIJ {

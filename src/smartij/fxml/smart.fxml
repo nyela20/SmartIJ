@@ -10,7 +10,7 @@
    <bottom>
       <HBox prefHeight="5.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <VBox style="-fx-background-color: #2C2C2C;">
-            <Button alignment="TOP_LEFT" maxWidth="201.0" mnemonicParsing="false" onAction="#open" prefHeight="38.0" prefWidth="110.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Open file">
+            <Button alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#open" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Open file">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -19,7 +19,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="buttonAddCat" maxWidth="200.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="20.0" prefWidth="110.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Add C" underline="true" visible="false">
+            <Button fx:id="buttonAddCat" maxWidth="200.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Add C" underline="true" visible="false">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -36,7 +36,7 @@
             </Button>
          </VBox>
          <VBox prefHeight="43.0" prefWidth="150.0" style="-fx-background-color: #2b2b2b;">
-            <Button fx:id="buttonAddLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#addLevel" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Add level" visible="false">
+            <Button fx:id="buttonAddLevel" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addLevel" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Add level" visible="false">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -44,7 +44,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="buttonChangeLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#changeLevel" prefHeight="20.0" prefWidth="140.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Change level" visible="false">
+            <Button fx:id="buttonChangeLevel" maxWidth="200.0" mnemonicParsing="false" onAction="#changeLevel" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #3c3f41; -fx-border-color: #3c3f41; -fx-text-fill: #dedede;" text="Change level" visible="false">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
