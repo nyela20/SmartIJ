@@ -1,6 +1,12 @@
-# SmartIJ for Linux
-- SmartIJ is an application (tools) which convert a board from a .pdf to a spreadsheet in .xlxs .xls .dot format 
-- This application is made for Autocad user, I know they need to convert a .pdf file to a .xlsx file when they work
+# SmartIJ Linux/Windows  (for Autocad user)
 
-Tutorial : 
-  - Read the spectification for the tutorial, find the specification.pdf in the project root
+- SmartIJ is an tools which convert
+  a board from a .pdf to a spreadsheet
+  in .xlxs .xls .dot format.
+  
+- You need to download 
+  - javafx 11.0.2 : https://gluonhq.com/products/javafx/
+  - and poi-bin-5.0.0-20210120 : https://downloads.apache.org/poi/release/bin/
+ 
+- Tutorial : 
+  - Read the spectification for the tutorial.
