@@ -15,7 +15,6 @@ import smartij.model.ElementIG;
 import smartij.model.SmartIG;
 
 
-import static jdk.nashorn.internal.objects.Global.Infinity;
 
 
 public class VuePostit extends BorderPane implements PatternObserver {
@@ -64,7 +63,7 @@ public class VuePostit extends BorderPane implements PatternObserver {
 
     private void init(){
         this.setLayoutX(categoryIG.getPosx()); this.setLayoutY(categoryIG.getPosy()); initVbox();initLabel();initButton();
-        setMaxHeight(-Infinity);setMaxWidth(-Infinity); setMinHeight(prefHeight); setMinWidth(prefWidth);
+        setMaxHeight(-9999);setMaxWidth(-9999); setMinHeight(prefHeight); setMinWidth(prefWidth);
         setTop(label); setBottom(button); setCenter(vbox);
     }
 
