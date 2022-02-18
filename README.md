@@ -9,4 +9,4 @@
   - and poi-bin-5.0.0-20210120 : https://downloads.apache.org/poi/release/bin/
  
 - Tutorial : 
-  - Read the spectification for the tutorial.
+  - Read the specification.
